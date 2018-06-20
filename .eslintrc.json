@@ -1,0 +1,55 @@
+{
+	"env":
+	{
+        "node": true,
+        "es6": true
+    },
+    "extends": "eslint:recommended",
+	"rules":
+	{
+		"camelcase": "warn",
+		"brace-style":
+		[
+			"warn",
+			"allman",
+			{
+				"allowSingleLine": true
+			}
+		],
+		"no-console": "warn",
+		"no-empty": "warn",
+		"use-isnan": "warn",
+		"valid-jsdoc": "warn",
+		"no-empty-function": "warn",
+		"no-invalid-this": "warn",
+		"no-multi-spaces": "warn",
+		"no-new": "warn",
+		"no-redeclare": "warn",
+		"no-undef-init": "warn",
+		"no-unused-vars": "warn",
+		"array-bracket-spacing":
+		[
+			"warn",
+			"never"
+		],
+		"block-spacing": "warn",
+		"comma-spacing":
+		[
+			"warn",
+			{
+				"before": false,
+				"after": true
+			}
+		],
+		"comma-style":
+		[
+			"warn",
+			"last"
+		],
+		"func-call-spacing":
+		[
+			"warn",
+			"never"
+		]
+	}
+}

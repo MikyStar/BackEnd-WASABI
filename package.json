@@ -1,0 +1,22 @@
+{
+	"name": "backend-wasabi",
+	"version": "1.0.0",
+	"description": "Backend of the PedalBoard of WASABI's team research project.",
+	"main": "server.js",
+	"scripts": {
+		"start": "node ./src/server.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/MikyStar/BackEnd-WASABI.git"
+	},
+	"author": "Mike AUBENAS",
+	"license": "UNLICENSED",
+	"bugs": {
+		"url": "https://github.com/MikyStar/BackEnd-WASABI/issues"
+	},
+	"homepage": "https://github.com/MikyStar/BackEnd-WASABI#readme",
+	"dependencies": {
+		"express": "^4.16.3"
+	}
+}
