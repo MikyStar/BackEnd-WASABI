@@ -1,0 +1,7 @@
+node_modules
+npm-debug.log
+.editorconfig
+.eslintrc.json
+.gitignore
+.git
+README.md
