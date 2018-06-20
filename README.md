@@ -33,14 +33,47 @@ It's will link them together to create our final Docker Image
 
 ### MondoDB
 
-#### Create a database
+#### Create the environment
 
 ```sh
 mongod --dbpath [ Path of the folder where I want my DB ]
 ```
 
-#### Launch the database
+#### Launch the shell
 
 ```sh
+mongod --dbpath [ Path of the folder where I want my DB ]
 mongo --host [ Adress and port where mongod listens on ]
+```
+
+#### Create a database
+
+`Once in the MongoDB shell`
+```sh
+use [ Name of the database ]
+db # Just to check
+```
+
+#### Manually add datas
+
+`Once in the MongoDB shell`
+```sh
+db.[table].insert([ JSON format informations ])
+```
+
+`Note `:
+- "db" is the keyword that we will use, that's why we have to use the _use_ command before, just to select the database
+- The table (which is not really a table because NoSQL) doesn't has to be defined, it will then be added automatically
+
+<h2><bold>OR</bold></h2>
+
+```sh
+[name of the variable] = [JSON format informations, that can be an array of course]
+db.[table].insert([name of the variable]);
+```
+
+#### To display what is inside a _table_
+
+```sh
+db.[table].find().pretty()
 ```
