@@ -1,14 +1,33 @@
-'use strict';
-
 const express = require('express');
-const sharedVariables = require('./sharedVariables');
+const SensibleInformations = require('./sensibleInformations');
+const database = require('./database');
+
 const app = express();
+database.initializeMongo();
 
 app.get('/', (request, response) =>
 {
 	response.send('Get request received');
 });
 
-app.listen(sharedVariables.PORT, sharedVariables.HOST);
+app.get('/testFind', (request, response) =>
+{
+	database.User.find( (error, result) =>
+	{
+		if(error)
+			return response.error(error);
 
-console.log(`NodeJS server running on http://${sharedVariables.HOST}:${sharedVariables.PORT}`);
+		console.log(result);
+
+		response.json(result);
+	})
+});
+
+
+app.listen(SensibleInformations.PORT, SensibleInformations.HOST, () =>
+{
+	const redConsoleDisplayCode = '\x1b[31m';
+	const resetConsoleColorDisplayCode = "\x1b[0m"
+
+	console.log( redConsoleDisplayCode, `NodeJS server running on http://${ SensibleInformations.HOST }:${ SensibleInformations.PORT }`, resetConsoleColorDisplayCode);
+});

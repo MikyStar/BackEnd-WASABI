@@ -1,22 +1,30 @@
 # Big thanks to this article https://goo.gl/7f3Xdr
 
-version : "1"
+version : "3.6"
 
 services :
 
-	backend-wasabi : # How I chose to name my service
-		container_name : backend-wasabi # How i chose to name the container, makes it easier to work with it
-		restart : always # If it fails restart it automatically
-		build: . # With the Dockerfile in this folder
-		ports :
-			- "5001:5001" # Mapping host and container ports
-		links :
-			- mongo # It's going to use "mongo" service, just beneath
+    backend-wasabi : # How I chose to name my service
+        container_name : backend-wasabi # How i chose to name the container, makes it easier to work with it
+        restart : always # If it fails restart it automatically
+        build : . # With the Dockerfile in this folder
+        command : node ./src/server.js
+        ports :
+            - "5001:5001" # Mapping host and container ports
+        volumes :
+            - ./src:/usr/src/backend-wasabi # Map my database created by the JS with the mounting point of the volume in mongo Dockerfile, this way we use a persistant storage, this way it "will use volume of any previous containers and copy it to the new container, ensuring that no data is lost."
+            - /usr/src/backend-wasabi/node_modules
+        depends_on :
+            - "mongo" # It's going to use "mongo" service, just beneath
 
-	mongo :
-		container_name : mongo
-		image : mongo # Name of the image in the Docker Hub Registry
-		volumes :
-			- ./database:/data/db # Map my database located in ./database with the mounting point of the volume in mongo Dockerfile, this way we use a persistant storage, this way it "will use volume of any previous containers and copy it to the new container, ensuring that no data is lost."
-		ports :
-			- "27017:27017"
+    mongo :
+        container_name : mongo
+        image : "mongo" # Name of the image in the Docker Hub Registry
+        ports :
+            - "27017:27017"
+
+    adminmongo :
+        container_name : admin-mongo
+        image : "mrvautin/adminmongo"
+        ports :
+            - "1234:1234"
