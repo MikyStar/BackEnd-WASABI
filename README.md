@@ -34,10 +34,49 @@ The Dockerfile is basically the file that "parse" my local version of the code t
 It's the file containing containers of my project (if I'm using multiple containers) such as NodeJS, PHP, MongoDB, MySQL, Python ...
 It's will link them together to create our final Docker Image
 
+#### Creating a Docker Machine to run your image
+
+For Mac
+```sh
+docker-machine create --driver virtualbox [ name of the machine ] # If there is no machine on your system, call your first one default
+docker-machine env [ name of the machine]
+eval "$(docker-machine env default)" # To connect your shell to the new machine
+```
+
+#### Listing all the machines on your system
+
+```sh
+docker-machine ls
+```
+
 #### Building the image
 
 ```sh
 docker-compose build
+```
+
+#### Get list of all the images stored
+
+```sh
+docker images
+```
+
+#### Run a container
+
+```sh
+docker run [ image name ][optional ":"tag name]
+```
+
+#### Run an image
+
+```sh
+docker-compose up
+```
+
+#### Get the IP address of the images running on the machine
+
+```sh
+docker-machine ip [ name of the image ]
 ```
 
 ### MondoDB

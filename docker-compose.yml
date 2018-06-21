@@ -8,7 +8,7 @@ services :
         container_name : backend-wasabi # How i chose to name the container, makes it easier to work with it
         restart : always # If it fails restart it automatically
         build : . # With the Dockerfile in this folder
-        command : node ./src/server.js
+        command : node server.js
         ports :
             - "5001:5001" # Mapping host and container ports
         volumes :

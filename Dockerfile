@@ -3,21 +3,18 @@
 # Add NodeJS and specify it's version
 FROM node:9.3.0
 
-# Create the directory that will contain the code on the server
-RUN mkdir -p /usr/src/backend-wasabi
-
 # Specify where every command in the rest of this file will e executed
 WORKDIR /usr/src/backend-wasabi
 
 # Install all the dependencies with the package.json file
-COPY package.json /usr/src/backend-wasabi
+COPY package.json .
 RUN npm install
 
 # Copy the code of this project to the server
-COPY . /usr/src/backend-wasabi
+COPY . .
 
 # Port where the container will listen to
 EXPOSE 5001
 
 # The command to execute our container
-CMD node ./src/server.js
+CMD node server.js

@@ -24,7 +24,7 @@ app.get('/testFind', (request, response) =>
 });
 
 
-app.listen(SensibleInformations.PORT, SensibleInformations.HOST, () =>
+app.listen(SensibleInformations.PORT, () =>
 {
 	const redConsoleDisplayCode = '\x1b[31m';
 	const resetConsoleColorDisplayCode = "\x1b[0m"
