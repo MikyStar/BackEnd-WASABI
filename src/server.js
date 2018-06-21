@@ -32,5 +32,5 @@ app.listen(SensibleInformations.PORT, () =>
 	const redConsoleDisplayCode = '\x1b[31m';
 	const resetConsoleColorDisplayCode = "\x1b[0m"
 
-	console.log( redConsoleDisplayCode, `NodeJS server running on http://${ SensibleInformations.HOST }:${ SensibleInformations.PORT }`, resetConsoleColorDisplayCode);
+	console.log( redConsoleDisplayCode, `NodeJS server running on port ${ SensibleInformations.PORT }`, resetConsoleColorDisplayCode);
 });

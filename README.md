@@ -8,6 +8,7 @@ This is the repository containing the backend code for the PedalBoard of WASABI'
 
 - Express
 - Mongoose
+- Swagger UI
 
 ## Server
 
@@ -29,9 +30,9 @@ This is the repository containing the backend code for the PedalBoard of WASABI'
 4. Run docker-compose build
 5. Run docker-compose up
 
-# API
+# API Documentation
 
-Just add /api-docs to the URL of your docker-machine
+Just add /api-docs to the URL of your docker-machine and you'll find the documentation
 
 # What I've learnt
 
@@ -102,6 +103,16 @@ docker rmi [ name of the image ]
 # Delete all images
 docker rmi $(docker images -q)
 ```
+
+### Pushing an image to a Docker Cloud repository
+
+```sh
+docker login
+docker tag [ image ] [ Docker ID ]/[ image ][:tag]
+docker push [ Docker ID ]/[ image ][:tag]
+```
+
+`Note :` The tag is what is going to be visible in the Docker Cloud to identify your commit 
 
 ## MondoDB
 
