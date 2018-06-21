@@ -1,0 +1,40 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"description": "Backend of the PedalBoard of WASABI's team research project.",
+		"version": "1.0.0",
+		"title": "PedalBoard API",
+		"contact": {
+			"email": "mike.aubenas@gmail.com"
+		}
+	},
+	"tags": [
+		{
+			"name": "bank",
+			"description": "Where sets of presets are stored"
+		},
+		{
+			"name": "presets",
+			"description": "A layout of a PedalBord module's settings"
+		}
+	],
+	"schemes": [
+		"https",
+		"http"
+	],
+	"paths": {
+		"/bank": {
+			"post": {
+				"tags": [
+					"bank"
+				],
+				"summary": "Add a new bank",
+				"description": ""
+			}
+		}
+	},
+	"externalDocs": {
+		"description": "Find out more about Swagger",
+		"url": "http://swagger.io"
+	}
+}

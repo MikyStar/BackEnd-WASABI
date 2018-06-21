@@ -7,14 +7,14 @@ FROM node:9.3.0
 WORKDIR /usr/src/backend-wasabi
 
 # Install all the dependencies with the package.json file
-COPY package.json .
+COPY package.json /usr/src/backend-wasabi
 RUN npm install
 
 # Copy the code of this project to the server
-COPY . .
+COPY . /usr/src/backend-wasabi
 
 # Port where the container will listen to
 EXPOSE 5001
 
 # The command to execute our container
-CMD node server.js
+CMD npm start

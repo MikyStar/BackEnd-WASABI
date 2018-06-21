@@ -1,9 +1,11 @@
 const express = require('express');
 const SensibleInformations = require('./sensibleInformations');
 const database = require('./database');
+const swaggerUI = require('swagger-ui-express');
+const swaggerDocumentation = require('./api-documentation.json');
 
 const app = express();
-database.initializeMongo();
+/* database.initializeMongo(); */
 
 app.get('/', (request, response) =>
 {
@@ -23,6 +25,7 @@ app.get('/testFind', (request, response) =>
 	})
 });
 
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocumentation));
 
 app.listen(SensibleInformations.PORT, () =>
 {

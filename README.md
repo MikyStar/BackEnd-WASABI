@@ -7,34 +7,48 @@ This is the repository containing the backend code for the PedalBoard of WASABI'
 ## JS APIS
 
 - Express
+- Mongoose
 
 ## Server
 
 - Docker
 - MongoDB
+- AdminMongo
 
-## Usefull links
+# Usefull links
 
 - [Docker + NodeJS + MongoDB](https://medium.com/statuscode/dockerising-a-node-js-and-mongodb-app-d22047e2806f)
 - [MongoDB](https://closebrace.com/tutorials/2017-03-02/the-dead-simple-step-by-step-guide-for-front-end-developers-to-getting-up-and-running-with-nodejs-express-and-mongodb)
 - [How Mongo stores datad](https://www.slideshare.net/mdirolf/inside-mongodb-the-internals-of-an-opensource-database)
 
-## What I've learnt
+# Tutorial
 
-### Docker
+1. Have Docker installed
+2. Clone the project
+3. Change directory in the project
+4. Run docker-compose build
+5. Run docker-compose up
 
-#### Dockerfile
+# API
+
+Just add /api-docs to the URL of your docker-machine
+
+# What I've learnt
+
+## Docker
+
+### Dockerfile
 
 The Dockerfile is basically the file that "parse" my local version of the code to the future folder on the server where my code will be executed. It contains instruction to setting up the environment.
 
 `Note :` The WORDIR command only change the working directory for RUN commands, otherwise, ADD, COPY and so on are not impacted.
 
-#### docker-compose.yml
+### docker-compose.yml
 
 It's the file containing containers of my project (if I'm using multiple containers) such as NodeJS, PHP, MongoDB, MySQL, Python ...
 It's will link them together to create our final Docker Image
 
-#### Creating a Docker Machine to run your image
+### Creating a Docker Machine to run your image
 
 For Mac
 ```sh
@@ -43,58 +57,68 @@ docker-machine env [ name of the machine]
 eval "$(docker-machine env default)" # To connect your shell to the new machine
 ```
 
-#### Listing all the machines on your system
+### Listing all the machines on your system
 
 ```sh
 docker-machine ls
 ```
 
-#### Building the image
+### Building the image
 
 ```sh
 docker-compose build
 ```
 
-#### Get list of all the images stored
+### Get list of all the images stored
 
 ```sh
 docker images
 ```
 
-#### Run a container
+### Run a container
 
 ```sh
 docker run [ image name ][optional ":"tag name]
 ```
 
-#### Run an image
+### Run an image
 
 ```sh
 docker-compose up
 ```
 
-#### Get the IP address of the images running on the machine
+### Get the IP address of the images running on the machine
 
 ```sh
 docker-machine ip [ name of the image ]
 ```
 
-### MondoDB
+### Deleting images
 
-#### Create the environment
+```sh
+# Delete an image
+docker rmi [ name of the image ]
+
+# Delete all images
+docker rmi $(docker images -q)
+```
+
+## MondoDB
+
+### Create the environment
 
 ```sh
 mongod --dbpath [ Path of the folder where I want my DB ]
 ```
 
-#### Launch the shell
+### Launch the shell
 
 ```sh
 mongod --dbpath [ Path of the folder where I want my DB ]
 mongo --host [ Adress and port where mongod listens on ]
 ```
 
-#### Create a database
+### Create a database
 
 `Once in the MongoDB shell`
 ```sh
@@ -102,7 +126,7 @@ use [ Name of the database ]
 db # Just to check
 ```
 
-#### Manually add datas
+### Manually add datas
 
 `Once in the MongoDB shell`
 ```sh
@@ -120,7 +144,7 @@ db.[table].insert([ JSON format informations ])
 db.[table].insert([name of the variable]);
 ```
 
-#### To display what is inside a _table_
+### To display what is inside a _table_
 
 ```sh
 db.[table].find().pretty()
