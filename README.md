@@ -64,13 +64,29 @@ eval "$(docker-machine env default)" # To connect your shell to the new machine
 docker-machine ls
 ```
 
-### Building the image
+### Building a container
 
 ```sh
 docker-compose build
 ```
 
-### Get list of all the images stored
+### Reinitializing an image
+
+```sh
+docker-compose rm
+```
+
+### Get a list of all containers
+
+```sh
+# Only running containers
+docker ps
+
+# All containers
+docker ps -a
+```
+
+### Get a list of all the images stored
 
 ```sh
 docker images
@@ -82,10 +98,16 @@ docker images
 docker run [ image name ][optional ":"tag name]
 ```
 
-### Run an image
+### Run a container
 
 ```sh
 docker-compose up
+```
+
+### Launch a docker machine
+
+```sh
+docker-machine start [ name of machine ]
 ```
 
 ### Get the IP address of the images running on the machine
@@ -112,7 +134,14 @@ docker tag [ image ] [ Docker ID ]/[ image ][:tag]
 docker push [ Docker ID ]/[ image ][:tag]
 ```
 
-`Note :` The tag is what is going to be visible in the Docker Cloud to identify your commit 
+`Note :` The tag is what is going to be visible in the Docker Cloud to identify your commit
+
+### Browsing inside a container just like an OS
+
+```sh
+docker exec -it [ name of container ] bash
+# Then you are inside the container and to exit just use 'exit'
+```
 
 ## MondoDB
 

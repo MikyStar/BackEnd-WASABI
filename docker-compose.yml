@@ -20,11 +20,12 @@ services :
     mongo :
         container_name : mongo
         image : "mongo" # Name of the image in the Docker Hub Registry
+        restart : always # If it fails restart it automatically
         ports :
             - "27017:27017"
 
     adminmongo :
-        container_name : admin-mongo
         image : "mrvautin/adminmongo"
+        restart : always # If it fails restart it automatically
         ports :
             - "1234:1234"

@@ -1,20 +1,30 @@
 const express = require('express');
 const SensibleInformations = require('./sensibleInformations');
-const database = require('./database');
+const Database = require('./Database');
 const swaggerUI = require('swagger-ui-express');
 const swaggerDocumentation = require('./api-documentation.json');
 
 const app = express();
-/* database.initializeMongo(); */
+
+
+app.listen( SensibleInformations.PORT, () =>
+{
+	const redConsoleDisplayCode = '\x1b[31m';
+	const resetConsoleColorDisplayCode = "\x1b[0m"
+
+	console.log( redConsoleDisplayCode, `NodeJS server running on port ${SensibleInformations.PORT}`, resetConsoleColorDisplayCode );
+} );
+
+Database.initializeMongo();
 
 app.get('/', (request, response) =>
 {
-	response.send('Get request received');
+	response.send(`The server receiver a GET request`);
 });
 
 app.get('/testFind', (request, response) =>
 {
-	database.User.find( (error, result) =>
+	Database.User.find( (error, result) =>
 	{
 		if(error)
 			return response.error(error);
@@ -25,12 +35,33 @@ app.get('/testFind', (request, response) =>
 	})
 });
 
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocumentation));
-
-app.listen(SensibleInformations.PORT, () =>
+app.post('/user', (request, response) =>
 {
-	const redConsoleDisplayCode = '\x1b[31m';
-	const resetConsoleColorDisplayCode = "\x1b[0m"
+	console.log( "/user received" );
+	try
+	{
+		let result = Database.addUser(request);
 
-	console.log( redConsoleDisplayCode, `NodeJS server running on port ${ SensibleInformations.PORT }`, resetConsoleColorDisplayCode);
+		if(result != "ok")
+			throw new Error(result);
+	}
+	catch(error)
+	{
+		response.status(400).send(error);
+	}
 });
+
+app.get('/user', (request, response) =>
+{
+	Database.User.find( ( error, result ) =>
+	{
+		if ( error )
+			return response.status(400).send(error);
+
+		console.log( result );
+
+		response.json( result );
+	} )
+});
+
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocumentation));

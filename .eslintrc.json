@@ -20,13 +20,11 @@
 		"no-empty": "warn",
 		"use-isnan": "warn",
 		"valid-jsdoc": "warn",
-		"no-empty-function": "warn",
 		"no-invalid-this": "warn",
 		"no-multi-spaces": "warn",
 		"no-new": "warn",
 		"no-redeclare": "warn",
-		"no-undef-init": "warn",
-		"no-unused-vars": "warn",
+		"no-undef" : "off",
 		"array-bracket-spacing":
 		[
 			"warn",
