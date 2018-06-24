@@ -1,7 +1,8 @@
 const express = require('express');
-const SensibleInformations = require('./sensibleInformations');
-const Database = require('./Database');
+const chalk = require('chalk');
 const swaggerUI = require('swagger-ui-express');
+const SensibleInformations = require('./sensibleInformations');
+const database = require('./model/database');
 const swaggerDocumentation = require('./api-documentation.json');
 
 const app = express();
@@ -9,13 +10,10 @@ const app = express();
 
 app.listen( SensibleInformations.PORT, () =>
 {
-	const redConsoleDisplayCode = '\x1b[31m';
-	const resetConsoleColorDisplayCode = "\x1b[0m"
-
-	console.log( redConsoleDisplayCode, `NodeJS server running on port ${SensibleInformations.PORT}`, resetConsoleColorDisplayCode );
+	console.log( chalk.red(`NodeJS server running on port ${SensibleInformations.PORT}`) );
 } );
 
-Database.initializeMongo();
+database.initializeMongo();
 
 app.get('/', (request, response) =>
 {
@@ -24,7 +22,7 @@ app.get('/', (request, response) =>
 
 app.get('/testFind', (request, response) =>
 {
-	Database.User.find( (error, result) =>
+	database.User.find( (error, result) =>
 	{
 		if(error)
 			return response.error(error);
@@ -40,7 +38,7 @@ app.post('/user', (request, response) =>
 	console.log( "/user received" );
 	try
 	{
-		let result = Database.addUser(request);
+		let result = database.addUser(request);
 
 		if(result != "ok")
 			throw new Error(result);
@@ -53,7 +51,7 @@ app.post('/user', (request, response) =>
 
 app.get('/user', (request, response) =>
 {
-	Database.User.find( ( error, result ) =>
+	database.User.find( ( error, result ) =>
 	{
 		if ( error )
 			return response.status(400).send(error);

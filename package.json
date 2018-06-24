@@ -20,5 +20,8 @@
 		"express": "^4.16.3",
 		"mongoose": "^5.1.6",
 		"swagger-ui-express": "^3.0.10"
+	},
+	"devDependencies": {
+		"chalk": "^2.4.1"
 	}
 }

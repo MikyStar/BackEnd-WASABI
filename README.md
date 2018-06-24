@@ -24,11 +24,42 @@ This is the repository containing the backend code for the PedalBoard of WASABI'
 
 # Tutorial
 
-1. Have Docker installed
-2. Clone the project
-3. Change directory in the project
-4. Run docker-compose build
-5. Run docker-compose up
+## Initialization
+
+1. cd [ Path of the project ]
+2. npm install
+3. cd adminMongo
+4. npm install
+5. Modify /config/app.json with :
+```json
+{
+	"app":
+	{
+		"host": "127.0.0.1",
+		"port": 27017
+	}
+}
+```
+6. ./initDatabase.sh
+7. $ use backend-wasabi
+8. $ db.createUser( { user : "localhostUser", pwd : "localhostPassword", roles : [ "readWrite", "dbAdmin" ] } )
+
+## Working
+
+1. Launch the database using
+```sh
+mongod --dbpath database &
+```
+2.
+```sh
+cd adminMongo && npm start # You can now have access to adminMongo with http://127.0.0.1:1234
+```
+3.
+```sh
+cd .. && npm start # Node server running on http://127.0.0.1:5001
+```
+
+
 
 # API Documentation
 
@@ -156,6 +187,12 @@ mongod --dbpath [ Path of the folder where I want my DB ]
 ```sh
 mongod --dbpath [ Path of the folder where I want my DB ]
 mongo --host [ Adress and port where mongod listens on ]
+```
+
+### Stop the server
+
+```sh
+mongod --dbpath [ Path of the database ] --shutdown
 ```
 
 ### Create a database
