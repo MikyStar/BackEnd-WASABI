@@ -6,15 +6,15 @@ This is the repository containing the backend code for the PedalBoard of WASABI'
 
 ## JS APIS
 
-- Express
-- Mongoose
-- Swagger UI
+- [Express](http://expressjs.com/fr/)
+- [Mongoose](http://mongoosejs.com/)
+- [Swagger UI](https://swagger.io/tools/swagger-ui/)
 
 ## Server
 
-- Docker
-- MongoDB
-- AdminMongo
+- [Docker](https://www.docker.com/)
+- [MongoDB](https://www.mongodb.com/)
+- [AdminMongo](https://github.com/mrvautin/adminMongo)
 
 # Usefull links
 
@@ -36,7 +36,7 @@ This is the repository containing the backend code for the PedalBoard of WASABI'
 	"app":
 	{
 		"host": "127.0.0.1",
-		"port": 27017
+		"port": 1234
 	}
 }
 ```
@@ -59,11 +59,19 @@ cd adminMongo && npm start # You can now have access to adminMongo with http://1
 cd .. && npm start # Node server running on http://127.0.0.1:5001
 ```
 
-
-
 # API Documentation
 
-Just add /api-docs to the URL of your docker-machine and you'll find the documentation
+## Access
+
+Just add /api-docs to the URL of the server and you'll find the documentation
+
+## Modify
+
+Just update src/api-documentation.js using [those conventions.](https://editor.swagger.io/)
+
+<br />
+<hr />
+<br />
 
 # What I've learnt
 
