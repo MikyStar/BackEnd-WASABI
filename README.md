@@ -9,6 +9,7 @@ This is the repository containing the backend code for the PedalBoard of WASABI'
 - [Express](http://expressjs.com/fr/)
 - [Mongoose](http://mongoosejs.com/)
 - [Swagger UI](https://swagger.io/tools/swagger-ui/)
+- [Chalk](https://github.com/chalk/chalk)
 
 ## Server
 
