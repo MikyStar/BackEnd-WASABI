@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const chalk = require('chalk');
 const validation = require('../Utilities/validation');
-const sensibleInformations = require('../sensibleInformations');
+const sensibleInformations = require('../Utilities/sensibleInformations');
 const mongooseSchemas = require('./mongooseSchemas');
 
 const DATABASE_CONNECTION = `mongodb://${sensibleInformations.DATABASE_USER}:${sensibleInformations.DATABASE_PASSWORD}@${sensibleInformations.SERVER_ADRESS}:${sensibleInformations.DATABASE_PORT}/${sensibleInformations.DATABASE_NAME }`;
