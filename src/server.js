@@ -22,6 +22,19 @@ app.get('/', (request, response) =>
 	response.send(`The server receiver a GET request`);
 });
 
+app.get('/user', (request, response) =>
+{
+	let idOfUserIMLookingFor = request.query.id;
+
+	database.User.findById(idOfUserIMLookingFor, (error, result) =>
+	{
+		if( error )
+			return response.status( 400 ).send( "Element not found" );
+		else
+			return response.json( result );
+	});
+});
+
 app.post('/user', (request, response) =>
 {
 	console.log( "/user received : " + request.body );
