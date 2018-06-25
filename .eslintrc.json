@@ -16,7 +16,7 @@
 				"allowSingleLine": true
 			}
 		],
-		"no-console": "warn",
+		"no-console": "off",
 		"no-empty": "warn",
 		"use-isnan": "warn",
 		"valid-jsdoc": "warn",

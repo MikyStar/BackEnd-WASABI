@@ -42,22 +42,23 @@ This is the repository containing the backend code for the PedalBoard of WASABI'
 }
 ```
 6. ./initDatabase.sh
-7. $ use backend-wasabi
-8. $ db.createUser( { user : "localhostUser", pwd : "localhostPassword", roles : [ "readWrite", "dbAdmin" ] } )
+7. $ use [ name of the database in src/sensibleInformations.js ]
+8. $ db.createUser( { user : [ name of the user in src/sensibleInformations.js ], pwd : [ database password in src/sensibleInformations.js ], roles : [ "readWrite", "dbAdmin" ] } )
 
 ## Working
 
-1. Launch the database using
 ```sh
-mongod --dbpath database &
-```
-2.
-```sh
-cd adminMongo && npm start # You can now have access to adminMongo with http://127.0.0.1:1234
-```
-3.
-```sh
-cd .. && npm start # Node server running on http://127.0.0.1:5001
+screen -S "mongod"
+mongod --dbpath database
+Ctrl + A + D
+screen -S "adminMongo"
+cd adminMongo && npm start
+Ctrl + A + D
+screen -S "nodeServer"
+npm start
+
+# To go back to a screen, type screen -r nameOfTheScreen
+# To view all the screen type screen -ls
 ```
 
 # API Documentation

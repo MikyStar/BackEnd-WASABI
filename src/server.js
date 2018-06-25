@@ -1,55 +1,40 @@
 const express = require('express');
 const chalk = require('chalk');
+const bodyParser = require('body-parser');
 const swaggerUI = require('swagger-ui-express');
-const SensibleInformations = require('./sensibleInformations');
+const sensibleInformations = require('./sensibleInformations');
 const database = require('./model/database');
 const swaggerDocumentation = require('./api-documentation.json');
 
 const app = express();
 
+app.use( bodyParser.json() );
+app.use( '/api-docs', swaggerUI.serve, swaggerUI.setup( swaggerDocumentation ) );
 
-app.listen( SensibleInformations.PORT, () =>
+app.listen( sensibleInformations.SERVER_PORT, () =>
 {
-	console.log( chalk.red(`NodeJS server running on port ${SensibleInformations.PORT}`) );
+	console.log( chalk.blue( `NodeJS server running on port ${ sensibleInformations.SERVER_PORT }`) );
+	database.initializeMongo();
 } );
-
-database.initializeMongo();
 
 app.get('/', (request, response) =>
 {
 	response.send(`The server receiver a GET request`);
 });
 
-app.get('/testFind', (request, response) =>
-{
-	database.User.find( (error, result) =>
-	{
-		if(error)
-			return response.error(error);
-
-		console.log(result);
-
-		response.json(result);
-	})
-});
-
 app.post('/user', (request, response) =>
 {
-	console.log( "/user received" );
-	try
-	{
-		let result = database.addUser(request);
+	console.log( "/user received : " + request.body );
 
-		if(result != "ok")
-			throw new Error(result);
-	}
-	catch(error)
-	{
-		response.status(400).send(error);
-	}
+	let result = database.addUser(request.body);
+
+	if(result instanceof Error)
+		return response.status(500).send(result)
+	else
+		return response.status(200).send("User added to the database");
 });
 
-app.get('/user', (request, response) =>
+app.get('/user/list', (request, response) =>
 {
 	database.User.find( ( error, result ) =>
 	{
@@ -61,5 +46,3 @@ app.get('/user', (request, response) =>
 		response.json( result );
 	} )
 });
-
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocumentation));
