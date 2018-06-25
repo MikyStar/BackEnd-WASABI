@@ -1,12 +1,12 @@
 const express = require('express');
-const mongooseSchemas = require( '../model/mongooseSchemas' );
+const user = require( '../model/schemas/user' );
 const database = require( '../model/database' );
 
 const router = express.Router();
 
 router.get( '/user', ( request, response ) =>
 {
-	mongooseSchemas.User.find( ( error, result ) =>
+	user.User.find( ( error, result ) =>
 	{
 		if ( error )
 			return response.status( 400 ).send( error );
@@ -19,9 +19,9 @@ router.get( '/user', ( request, response ) =>
 
 router.get( '/user/:id', ( request, response ) =>
 {
-	let idOfUserIMLookingFor = request.query.id;
+	let idOfUserIMLookingFor = request.params.id;
 
-	mongooseSchemas.User.findById( idOfUserIMLookingFor, ( error, result ) =>
+	user.User.findById( idOfUserIMLookingFor, ( error, result ) =>
 	{
 		if ( error )
 			return response.status( 400 ).send( error );

@@ -25,11 +25,7 @@
 		"no-new": "warn",
 		"no-redeclare": "warn",
 		"no-undef" : "off",
-		"array-bracket-spacing":
-		[
-			"warn",
-			"never"
-		],
+		"array-bracket-spacing": "off",
 		"block-spacing": "warn",
 		"comma-spacing":
 		[
