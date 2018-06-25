@@ -1,12 +1,12 @@
 const express = require('express');
-const user = require( '../model/schemas/user' );
+const User = require( '../model/schemas/user' );
 const database = require( '../model/database' );
 
 const router = express.Router();
 
 router.get( '/user', ( request, response ) =>
 {
-	user.User.find( ( error, result ) =>
+	User.find( ( error, result ) =>
 	{
 		if ( error )
 			return response.status( 400 ).send( error );
@@ -21,7 +21,7 @@ router.get( '/user/:id', ( request, response ) =>
 {
 	let idOfUserIMLookingFor = request.params.id;
 
-	user.User.findById( idOfUserIMLookingFor, ( error, result ) =>
+	User.findById( idOfUserIMLookingFor, ( error, result ) =>
 	{
 		if ( error )
 			return response.status( 400 ).send( error );
