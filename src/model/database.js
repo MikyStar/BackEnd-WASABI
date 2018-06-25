@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const chalk = require('chalk');
 const validation = require('../Utilities/validation');
 const sensibleInformations = require('../sensibleInformations');
+const mongooseSchemas = require('./mongooseSchemas');
 
 const DATABASE_CONNECTION = `mongodb://${sensibleInformations.DATABASE_USER}:${sensibleInformations.DATABASE_PASSWORD}@${sensibleInformations.SERVER_ADRESS}:${sensibleInformations.DATABASE_PORT}/${sensibleInformations.DATABASE_NAME }`;
 
@@ -20,16 +21,6 @@ exports.initializeMongo = () =>
 	});
 }
 
-const userSchema = mongoose.Schema(
-	{
-		name: String,
-		surname: String,
-		mail: String
-	} );
-
-User = exports.User = mongoose.model( 'User', userSchema );
-
-
 exports.addUser = (JSON) =>
 {
 	let name, surname, mail;
@@ -37,26 +28,26 @@ exports.addUser = (JSON) =>
 	if ( validation.checkAlphaNumeric(JSON.name) )
 		name = JSON.name;
 	else
-		return new Error("Name not alphanumeric");
+		return new Error("Name not alphanumeric, try to remove accents.");
 
 	if ( validation.checkAlphaNumeric( JSON.surname ) )
 		surname = JSON.surname;
 	else
-		return new Error( "Surname not alphanumeric" );
+		return new Error( "Surname not alphanumeric, try to remove accents." );
 
 	if ( validation.checkEmail( JSON.mail ) )
 		mail = JSON.mail;
 	else
-		return new Error( "Name not alphanumeric" );
+		return new Error( "Email type not valid." );
 
-	const user = new User(
+	const newUser = new mongooseSchemas.User(
 	{
 		name: name,
 		surname : surname,
 		mail : mail
 	});
 
-	user.save( (error) =>
+	newUser.save( (error) =>
 	{
 		if(error)
 		{
