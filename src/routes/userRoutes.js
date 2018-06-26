@@ -49,7 +49,7 @@ router.post( '/user', ( request, response ) =>
 						response.status( 400 ).send( "This mail already exits, choose an other one." );
 						break;
 					default :
-						response.status( 400 ).send( `An eunexpected error occured, please contact us.\n\n${error}` );
+						response.status( 400 ).send( `An unexpected error occured, please contact us.\n\n${error}` );
 				}
 			}
 			else
@@ -59,7 +59,25 @@ router.post( '/user', ( request, response ) =>
 
 router.put( '/user/:id', (request, response) =>
 {
-	//TODO
+	let userToUpdate = request.params.id;
+	let elementToUpdate = request.body;
+
+	User.findByIdAndUpdate( { _id: userToUpdate }, elementToUpdate, (error) =>
+	{
+		if ( error )
+		{
+			switch ( error.code )
+			{
+				case 11000:
+					response.status( 400 ).send( "This mail already exits, choose an other one." );
+					break;
+				default:
+					response.status( 400 ).send( `An unexpected error occured, please contact us.\n\n${error}` );
+			}
+		}
+		else
+			response.send("User updated");
+	}).then();
 });
 
 router.delete( '/user/:id', (request, response) =>
