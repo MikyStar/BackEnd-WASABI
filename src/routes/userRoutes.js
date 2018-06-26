@@ -28,23 +28,24 @@ router.get( '/user/:id', ( request, response ) =>
 	} );
 } );
 
-router.post( '/user', ( request, response, next ) =>
+router.post( '/user', ( request, response ) =>
 {
 	let json = request.body;
 
 	if ( !validation.checkAlphaNumeric( json.name ) )
-		next(new Error( "Name not alphanumeric, try to remove accents." ));
-
-	if ( !validation.checkAlphaNumeric( json.surname ) )
-		next(new Error( "Surname not alphanumeric, try to remove accents." ));
-
-	if ( !validation.checkEmail( json.mail ) )
-		next(new Error( "Email type not valid." ));
-
-	User.create( { name: json.name, surname: json.surname, mail: json.mail } ).catch(next).then( () =>
-	{
-		response.send("User added to the database");
-	}).catch(next);
+		response.status( 400 ).send( "Name not alphanumeric, try to remove accents.");
+	else if ( !validation.checkAlphaNumeric( json.surname ) )
+		response.status( 400 ).send( "Surname not alphanumeric, try to remove accents." );
+	else if( !validation.checkEmail( json.mail ) )
+		response.status( 400 ).send( "Email type not valid." );
+	else
+		User.create( { name: json.name, surname: json.surname, mail: json.mail }, (error) =>
+		{
+			if(error)
+				response.status( 400 ).send(error);
+			else
+				response.send("User added to database");
+		});
 } );
 
 router.put( '/user/:id', (request, response) =>
