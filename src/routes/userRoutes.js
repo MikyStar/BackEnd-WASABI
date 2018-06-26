@@ -42,9 +42,18 @@ router.post( '/user', ( request, response ) =>
 		User.create( { name: json.name, surname: json.surname, mail: json.mail }, (error) =>
 		{
 			if(error)
-				response.status( 400 ).send(error);
+			{
+				switch(error.code)
+				{
+					case 11000 :
+						response.status( 400 ).send( "This mail already exits, choose an other one." );
+						break;
+					default :
+						response.status( 400 ).send( `An eunexpected error occured, please contact us.\n\n${error}` );
+				}
+			}
 			else
-				response.send("User added to database");
+				response.send("User added");
 		});
 } );
 
@@ -55,7 +64,13 @@ router.put( '/user/:id', (request, response) =>
 
 router.delete( '/user/:id', (request, response) =>
 {
-	// TODO
+	let userToDelete = request.params.id;
+
+	User.findByIdAndRemove({ _id : userToDelete }, (error) =>
+	{
+		if(error)
+			response.status( 400 ).send( `An eunexpected error occured, please contact us.\n\n${error}` );
+	}).then( response.send("User removed") );
 });
 
 module.exports = router;
