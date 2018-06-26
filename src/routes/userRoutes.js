@@ -9,10 +9,19 @@ router.get( '/user', ( request, response ) =>
 	User.find( ( error, result ) =>
 	{
 		if ( error )
-			return response.status( 400 ).send( error );
+			response.status( 400 ).send( error );
 		else
-			return response.json( result );
-	} )
+		{
+			let safeResponse = new Array();
+
+			result.forEach( (element) =>
+			{
+				safeResponse.push( { 'name' : element.name, 'surname' : element.surname} );
+			});
+
+			response.send(safeResponse);
+		}
+	});
 } );
 
 router.get( '/user/:id', ( request, response ) =>
@@ -22,9 +31,9 @@ router.get( '/user/:id', ( request, response ) =>
 	User.findById( idOfUserIMLookingFor, ( error, result ) =>
 	{
 		if ( error )
-			return response.status( 400 ).send( error );
+			response.status( 400 ).send( error );
 		else
-			return response.json( result );
+			response.json( result );
 	} );
 } );
 
