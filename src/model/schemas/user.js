@@ -15,7 +15,8 @@ const User = mongoose.model( 'user', new mongoose.Schema(
 	mail :
 	{
 		type: String,
-		required: [true, 'Name required']
+		required: [true, 'Name required'],
+		unique : true
 	}
 }));
 
