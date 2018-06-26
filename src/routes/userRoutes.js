@@ -38,8 +38,10 @@ router.post( '/user', ( request, response ) =>
 		response.status( 400 ).send( "Surname not alphanumeric, try to remove accents." );
 	else if( !validation.checkEmail( json.mail ) )
 		response.status( 400 ).send( "Email type not valid." );
+	else if (!validation.checkPassword(json.password) )
+		response.status( 400 ).send( "Bad password, it should contain : \n- Two uppercase letters\n- One special caracter (!@#$&*)\n- Two digits\n- Three lower case letters\n- Have a length between 6 and 20" );
 	else
-		User.create( { name: json.name, surname: json.surname, mail: json.mail }, (error) =>
+		User.create( { name: json.name, surname: json.surname, mail: json.mail, password : json.password }, (error) =>
 		{
 			if(error)
 			{
