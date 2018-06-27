@@ -48,8 +48,8 @@ This is the repository containing the backend code for the PedalBoard of WASABI'
 9. mongod --dbpath database
 10. cd database
 11. mongo --host 127.0.0.1:27017
-12. $ use [ name of the database in src/sensibleInformations.js ]
-13. $ db.createUser( { user : "name of the user in src/sensibleInformations.js", pwd : "database password in src/sensibleInformations.js", roles : [ "readWrite", "dbAdmin" ] } )
+12. $ use [ name of the database in sensibleInformations.js ]
+13. $ db.createUser( { user : "name of the user in sensibleInformations.js", pwd : "database password in sensibleInformations.js", roles : [ "readWrite", "dbAdmin" ] } )
 
 ## Working
 
