@@ -1,25 +1,34 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const User = require( '../model/schemas/user' );
 const validation = require('../model/validation');
+const sensibleInformations = require('../assets/sensibleInformations');
 
 const router = express.Router();
 
-router.get( '/user', ( request, response ) =>
+router.get( '/user', validation.tokenAnalyzerMiddleware, ( request, response ) =>
 {
-	User.find( ( error, result ) =>
+	jwt.verify(request.token, sensibleInformations.JWT_SECRET, (error, authentification) =>
 	{
-		if ( error )
-			response.status( 400 ).send( error );
+		if( error ) response.status( 403 ).send("Authentification failed");
 		else
 		{
-			let safeResponse = new Array();
-
-			result.forEach( (element) =>
+			User.find( ( error, result ) =>
 			{
-				safeResponse.push( { 'id' : element._id, 'name' : element.name, 'surname' : element.surname} );
-			});
+				if ( error )
+					response.status( 400 ).send( error );
+				else
+				{
+					let safeResponse = new Array();
 
-			response.send(safeResponse);
+					result.forEach( ( element ) =>
+					{
+						safeResponse.push( { 'id': element._id, 'name': element.name, 'surname': element.surname } );
+					} );
+
+					response.send( safeResponse );
+				}
+			} );
 		}
 	});
 } );

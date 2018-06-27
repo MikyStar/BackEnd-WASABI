@@ -25,8 +25,7 @@ router.get( '/login', (request, response) =>
 					response.send(token);
 				});
 			}
-			else
-				response.status( 403 ).send( "Password incorrect")
+			else response.status( 403 ).send( "Password incorrect")
 		}
 	});
 
