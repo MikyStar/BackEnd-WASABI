@@ -1,7 +1,7 @@
 const express = require( 'express' );
 const jwt = require( 'jsonwebtoken' );
 const User = require( '../model/schemas/user' );
-const sensibleInformations = require( '../utilities/sensibleInformations.js');
+const sensibleInformations = require( '../assets/sensibleInformations.js');
 
 const router = express.Router();
 

@@ -1,5 +1,5 @@
 node_modules/
 database/
 .vscode/
-src/Utilities/sensibleInformations\.js
+src/assets/sensibleInformations\.js
 adminMongo

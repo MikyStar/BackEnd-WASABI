@@ -13,5 +13,10 @@ module.exports =
 	checkPassword : (password) =>
 	{
 		return /^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{6,20}$/.test( password ); //https://goo.gl/Z4et2X
+	},
+
+	tokenAnalyzerMiddleware: ( request, response, next ) =>
+	{
+
 	}
 }

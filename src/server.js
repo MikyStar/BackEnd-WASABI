@@ -1,14 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const swaggerUI = require('swagger-ui-express');
-const sensibleInformations = require('./Utilities/sensibleInformations');
+const sensibleInformations = require('./assets/sensibleInformations');
 
 
 const app = express();
 
 // Middlewares
 app.use( bodyParser.json() ); // JSON request handling
-app.use( '/api-docs', swaggerUI.serve, swaggerUI.setup( require('./Utilities/api-documentation.json'))); // Documentation
+app.use( '/api-docs', swaggerUI.serve, swaggerUI.setup( require('./assets/api-documentation.json'))); // Documentation
 app.use( '/api', require( './routes/userRoutes' ) );
 app.use( '/api', require( './routes/login' ) );
 
