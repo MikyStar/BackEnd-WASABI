@@ -9,7 +9,8 @@ const app = express();
 // Middlewares
 app.use( bodyParser.json() ); // JSON request handling
 app.use( '/api-docs', swaggerUI.serve, swaggerUI.setup( require('./Utilities/api-documentation.json'))); // Documentation
-app.use( '/api', require( './routes/userRoutes' ) ); // Routing
+app.use( '/api', require( './routes/userRoutes' ) );
+app.use( '/api', require( './routes/login' ) );
 
 app.listen( process.env.port || sensibleInformations.SERVER_PORT, () =>
 {

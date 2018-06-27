@@ -1,6 +1,6 @@
 const express = require('express');
 const User = require( '../model/schemas/user' );
-const validation = require('../utilities/validation');
+const regex = require('../model/regex');
 
 const router = express.Router();
 
@@ -16,7 +16,7 @@ router.get( '/user', ( request, response ) =>
 
 			result.forEach( (element) =>
 			{
-				safeResponse.push( { 'name' : element.name, 'surname' : element.surname} );
+				safeResponse.push( { 'id' : element._id, 'name' : element.name, 'surname' : element.surname} );
 			});
 
 			response.send(safeResponse);
@@ -41,13 +41,13 @@ router.post( '/user', ( request, response ) =>
 {
 	let json = request.body;
 
-	if ( !validation.checkAlphaNumeric( json.name ) )
+	if ( !regex.checkAlphaNumeric( json.name ) )
 		response.status( 400 ).send( "Name not alphanumeric, try to remove accents.");
-	else if ( !validation.checkAlphaNumeric( json.surname ) )
+	else if ( !regex.checkAlphaNumeric( json.surname ) )
 		response.status( 400 ).send( "Surname not alphanumeric, try to remove accents." );
-	else if( !validation.checkEmail( json.mail ) )
+	else if( !regex.checkEmail( json.mail ) )
 		response.status( 400 ).send( "Email type not valid." );
-	else if (!validation.checkPassword(json.password) )
+	else if (!regex.checkPassword(json.password) )
 		response.status( 400 ).send( "Bad password, it should contain : \n- Two uppercase letters\n- One special caracter (!@#$&*)\n- Two digits\n- Three lower case letters\n- Have a length between 6 and 20" );
 	else
 		User.create( { name: json.name, surname: json.surname, mail: json.mail, password : json.password }, (error) =>
