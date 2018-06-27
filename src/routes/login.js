@@ -1,6 +1,7 @@
 const express = require( 'express' );
 const jwt = require( 'jsonwebtoken' );
 const User = require( '../model/schemas/user' );
+const sensibleInformations = require( '../utilities/sensibleInformations.js');
 
 const router = express.Router();
 
@@ -18,7 +19,12 @@ router.get( '/login', (request, response) =>
 		else
 		{
 			if( user.password === inputedPassword)
-				response.send('OK')
+			{
+				jwt.sign( { user }, sensibleInformations.JWT_SECRET, (error, token) =>
+				{
+					response.send(token);
+				});
+			}
 			else
 				response.status( 403 ).send( "Password incorrect")
 		}

@@ -10,6 +10,7 @@ This is the repository containing the backend code for the PedalBoard of WASABI'
 - [Body-Parser](https://github.com/expressjs/body-parser)
 - [Mongoose](http://mongoosejs.com/)
 - [Swagger UI](https://swagger.io/tools/swagger-ui/)
+- [JWT](https://github.com/auth0/node-jsonwebtoken)
 
 ## Server
 
@@ -29,7 +30,7 @@ This is the repository containing the backend code for the PedalBoard of WASABI'
 
 1. cd [ Path of the project ]
 2. npm install
-3. cd adminMongo
+3. git clone https://github.com/mrvautin/adminMongo.git && cd adminMongo
 4. npm install
 5. Modify /config/app.json with :
 ```json
@@ -41,9 +42,14 @@ This is the repository containing the backend code for the PedalBoard of WASABI'
 	}
 }
 ```
-6. ./initDatabase.sh
-7. $ use [ name of the database in src/sensibleInformations.js ]
-8. $ db.createUser( { user : [ name of the user in src/sensibleInformations.js ], pwd : [ database password in src/sensibleInformations.js ], roles : [ "readWrite", "dbAdmin" ] } )
+6. cd ..
+7. mkdir database
+8. sudo chown -R `id -u` database
+9. mongod --dbpath database
+10. cd database
+11. mongo --host 127.0.0.1:27017
+12. $ use [ name of the database in src/sensibleInformations.js ]
+13. $ db.createUser( { user : "name of the user in src/sensibleInformations.js", pwd : "database password in src/sensibleInformations.js", roles : [ "readWrite", "dbAdmin" ] } )
 
 ## Working
 
