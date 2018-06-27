@@ -33,17 +33,24 @@ router.get( '/user', validation.tokenAnalyzerMiddleware, ( request, response ) =
 	});
 } );
 
-router.get( '/user/:id', ( request, response ) =>
+router.get( '/user/:id', validation.tokenAnalyzerMiddleware, ( request, response ) =>
 {
-	let idOfUserIMLookingFor = request.params.id;
-
-	User.findById( idOfUserIMLookingFor, ( error, result ) =>
+	jwt.verify( request.token, sensibleInformations.JWT_SECRET, ( error, authentification ) =>
 	{
-		if ( error )
-			response.status( 400 ).send( error );
+		if ( error ) response.status( 403 ).send( "Authentification failed" );
 		else
-			response.json( result );
-	} );
+		{
+			let idOfUserIMLookingFor = request.params.id;
+
+			User.findById( idOfUserIMLookingFor, ( error, result ) =>
+			{
+				if ( error )
+					response.status( 400 ).send( error );
+				else
+					response.json( result );
+			} );
+		}
+	});
 } );
 
 router.post( '/user', ( request, response ) =>
@@ -77,38 +84,52 @@ router.post( '/user', ( request, response ) =>
 		});
 } );
 
-router.put( '/user/:id', (request, response) =>
+router.put( '/user/:id', validation.tokenAnalyzerMiddleware, (request, response) =>
 {
-	let userToUpdate = request.params.id;
-	let elementToUpdate = request.body;
-
-	User.findByIdAndUpdate( { _id: userToUpdate }, elementToUpdate, (error) =>
+	jwt.verify( request.token, sensibleInformations.JWT_SECRET, ( error, authentification ) =>
 	{
-		if ( error )
-		{
-			switch ( error.code )
-			{
-				case 11000:
-					response.status( 400 ).send( "This mail already exits, choose an other one." );
-					break;
-				default:
-					response.status( 400 ).send( `An unexpected error occured, please contact us.\n\n${error}` );
-			}
-		}
+		if ( error ) response.status( 403 ).send( "Authentification failed" );
 		else
-			response.send("User updated");
-	}).then();
+		{
+			let userToUpdate = request.params.id;
+			let elementToUpdate = request.body;
+
+			User.findByIdAndUpdate( { _id: userToUpdate }, elementToUpdate, ( error ) =>
+			{
+				if ( error )
+				{
+					switch ( error.code )
+					{
+						case 11000:
+							response.status( 400 ).send( "This mail already exits, choose an other one." );
+							break;
+						default:
+							response.status( 400 ).send( `An unexpected error occured, please contact us.\n\n${error}` );
+					}
+				}
+				else
+					response.send( "User updated" );
+			} ).then();
+		}
+	});
 });
 
-router.delete( '/user/:id', (request, response) =>
+router.delete( '/user/:id', validation.tokenAnalyzerMiddleware, (request, response) =>
 {
-	let userToDelete = request.params.id;
-
-	User.findByIdAndRemove({ _id : userToDelete }, (error) =>
+	jwt.verify( request.token, sensibleInformations.JWT_SECRET, ( error, authentification ) =>
 	{
-		if(error)
-			response.status( 400 ).send( `An eunexpected error occured, please contact us.\n\n${error}` );
-	}).then( response.send("User removed") );
+		if ( error ) response.status( 403 ).send( "Authentification failed" );
+		else
+		{
+			let userToDelete = request.params.id;
+
+			User.findByIdAndRemove( { _id: userToDelete }, ( error ) =>
+			{
+				if ( error )
+					response.status( 400 ).send( `An eunexpected error occured, please contact us.\n\n${error}` );
+			} ).then( response.send( "User removed" ) );
+		}
+	});
 });
 
 module.exports = router;
