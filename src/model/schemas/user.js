@@ -18,10 +18,18 @@ const User = mongoose.model( 'user', new mongoose.Schema(
 		required : [true, 'A mail required ' ],
 		unique : true
 	},
+	authentificationMethod :
+	{
+		type : String,
+		required: [true, 'You need to provide the authentification method.']
+	},
+	googleID :
+	{
+		type : String
+	},
 	password :
 	{
 		type : String,
-		required : [ true, 'A password is required' ]
 	}
 }));
 

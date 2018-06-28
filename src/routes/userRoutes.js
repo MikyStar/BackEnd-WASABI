@@ -66,7 +66,7 @@ router.post( '/user', ( request, response ) =>
 	else if (!validation.checkPassword(json.password) )
 		response.status( 400 ).send( "Bad password, it should contain : \n- Two uppercase letters\n- Two digits\n- Three lower case letters\n- Have a length between 6 and 20\n- It can not contains ' \" & ? +");
 	else
-		User.create( { name: json.name, surname: json.surname, mail: json.mail, password : json.password }, (error) =>
+		User.create( { name: json.name, surname: json.surname, mail: json.mail, authentificationMethod: json.authentificationMethod, password : json.password }, (error) =>
 		{
 			if(error)
 			{

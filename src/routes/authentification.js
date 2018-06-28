@@ -13,10 +13,10 @@ router.get( '/auth/logout', (request, response) =>
 
 router.get( '/auth/google', passport.authenticate('google',
 {
-	scope : ['profile']
+	scope: ['profile', 'email']
 }));
 
-router.get( '/auth/google/redirect', (request, response) =>
+router.get( '/auth/google/redirect', passport.authenticate('google'), (request, response) =>
 {
 	response.send("Callback Google");
 });

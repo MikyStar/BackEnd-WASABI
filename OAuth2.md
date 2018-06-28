@@ -19,6 +19,9 @@
 Strategies are third part modules that allow us to call the provider's server.
 For each provider you want (Google, GitHub ...) you will need to install a strategie.
 
+### Google
+
+
 ## <a name="sources"></a> Sources
 
 - [YouTube : The NetNinja](https://goo.gl/HMB85g)
