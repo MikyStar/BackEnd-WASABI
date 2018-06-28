@@ -47,7 +47,7 @@ router.get( '/user/:id', validation.tokenAnalyzerMiddleware, ( request, response
 				if ( error )
 					response.status( 400 ).send( error );
 				else
-					response.json( result );
+					response.send( {'id' : result._id, 'name' : result.name, 'surname' : result.surname} );
 			} );
 		}
 	});
@@ -64,7 +64,7 @@ router.post( '/user', ( request, response ) =>
 	else if( !validation.checkEmail( json.mail ) )
 		response.status( 400 ).send( "Email type not valid." );
 	else if (!validation.checkPassword(json.password) )
-		response.status( 400 ).send( "Bad password, it should contain : \n- Two uppercase letters\n- One special caracter (!@#$&*)\n- Two digits\n- Three lower case letters\n- Have a length between 6 and 20" );
+		response.status( 400 ).send( "Bad password, it should contain : \n- Two uppercase letters\n- Two digits\n- Three lower case letters\n- Have a length between 6 and 20\n- It can not contains ' \" & ? +");
 	else
 		User.create( { name: json.name, surname: json.surname, mail: json.mail, password : json.password }, (error) =>
 		{
@@ -94,22 +94,27 @@ router.put( '/user/:id', validation.tokenAnalyzerMiddleware, (request, response)
 			let userToUpdate = request.params.id;
 			let elementToUpdate = request.body;
 
-			User.findByIdAndUpdate( { _id: userToUpdate }, elementToUpdate, ( error ) =>
+			if(authentification.user._id === userToUpdate)
 			{
-				if ( error )
+				User.findByIdAndUpdate( { _id: userToUpdate }, elementToUpdate, ( error ) =>
 				{
-					switch ( error.code )
+					if ( error )
 					{
-						case 11000:
-							response.status( 400 ).send( "This mail already exits, choose an other one." );
-							break;
-						default:
-							response.status( 400 ).send( `An unexpected error occured, please contact us.\n\n${error}` );
+						switch ( error.code )
+						{
+							case 11000:
+								response.status( 400 ).send( "This mail already exits, choose an other one." );
+								break;
+							default:
+								response.status( 400 ).send( `An unexpected error occured, please contact us.\n\n${error}` );
+						}
 					}
-				}
-				else
-					response.send( "User updated" );
-			} ).then();
+					else
+						response.send( "User updated" );
+				} ).then();
+			}
+			else response.status( 403 ).send("You can not update an other user's informations.")
+
 		}
 	});
 });
