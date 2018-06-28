@@ -19,6 +19,7 @@
 		"no-console": "off",
 		"no-empty": "warn",
 		"use-isnan": "warn",
+		"no-useless-escape" : "off",
 		"valid-jsdoc": "warn",
 		"no-invalid-this": "warn",
 		"no-multi-spaces": "warn",

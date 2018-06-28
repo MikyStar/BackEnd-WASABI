@@ -4,6 +4,12 @@ This is the repository containing the backend code for the PedalBoard of WASABI'
 
 # Technologies used
 
+## Server
+
+- [Docker](https://www.docker.com/)
+- [MongoDB](https://www.mongodb.com/)
+- [AdminMongo](https://github.com/mrvautin/adminMongo)
+
 ## JS APIS
 
 - [Express](http://expressjs.com/fr/)
@@ -11,12 +17,11 @@ This is the repository containing the backend code for the PedalBoard of WASABI'
 - [Mongoose](http://mongoosejs.com/)
 - [Swagger UI](https://swagger.io/tools/swagger-ui/)
 - [JWT](https://github.com/auth0/node-jsonwebtoken)
+- [Passport](http://www.passportjs.org/)
 
-## Server
+## Passport strategies
 
-- [Docker](https://www.docker.com/)
-- [MongoDB](https://www.mongodb.com/)
-- [AdminMongo](https://github.com/mrvautin/adminMongo)
+- Gogle OAuth 2.0
 
 # Usefull links
 
