@@ -25,7 +25,7 @@ const User = mongoose.model( 'user', new mongoose.Schema(
 	{
 		type : String,
 		trim: true,
-		required: [true, 'You need to provide the authentification method.']
+		default : 'local'
 	},
 	googleID :
 	{

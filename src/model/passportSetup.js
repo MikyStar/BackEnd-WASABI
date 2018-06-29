@@ -26,19 +26,28 @@ passport.use( new GoogleStrategy(
 	let surname = profile.name.familyName;
 	let googleID = profile.id;
 
-	User.create( { name, surname, mail: email, authentificationMethod : 'google', googleID }, ( error ) =>
+	User.findOne( { googleID }, (error, user) =>
 	{
-		if ( error )
+		if( !user )
 		{
-			switch ( error.code )
+			User.create( { name, surname, mail: email, authentificationMethod: 'google', googleID }, ( error ) =>
 			{
-				case 11000:
-					return new Error( "This mail already exits, choose an other one.");
-				default:
-					return new Error( `An unexpected error occured, please contact us.\n\n${error}`);
-			}
+				if ( error )
+				{
+					switch ( error.code )
+					{
+						case 11000:
+							return new Error( "This mail already exits, choose an other one." );
+						default:
+							return new Error( `An unexpected error occured, please contact us.\n\n${error}` );
+					}
+				}
+			} );
 		}
-	} );
+		else
+			return new Error("This user already exists");
+	});
 
-	done;
-}));
+	// add to db
+
+}))
