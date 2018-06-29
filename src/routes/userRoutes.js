@@ -115,22 +115,21 @@ router.put( '/user', tokenHandler.tokenAnalyzerMiddleware, (request, response) =
 	);
 });
 
-router.delete( '/user/:id', tokenHandler.tokenAnalyzerMiddleware, (request, response) =>
+router.delete( '/user', tokenHandler.tokenAnalyzerMiddleware, (request, response) =>
 {
-	jwt.verify( request.token, sensibleInformations.JWT_SECRET, ( error, authentification ) =>
-	{
-		if ( error ) response.status( 403 ).send( "Authentification failed" );
-		else
+	tokenHandler.verifyToken( request.token ).then(
+		( user ) =>
 		{
-			let userToDelete = request.params.id;
+			let userToDelete = user.id;
 
 			User.findByIdAndRemove( { _id: userToDelete }, ( error ) =>
 			{
 				if ( error )
 					response.status( 400 ).send( `An eunexpected error occured, please contact us.\n\n${error}` );
 			} ).then( response.send( "User removed" ) );
-		}
-	});
+		},
+		( error ) =>{ response.status( 403 ).send( "Authentification failed" ); }
+	);
 });
 
 module.exports = router;
