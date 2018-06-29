@@ -2,6 +2,7 @@ const express = require( 'express' );
 const jwt = require( 'jsonwebtoken' );
 const User = require( '../model/schemas/user' );
 const sensibleInformations = require( '../assets/sensibleInformations.js');
+const tokenHandler = require('../model/tokenHandler');
 
 const router = express.Router();
 
@@ -20,16 +21,15 @@ router.get( '/login', (request, response) =>
 		{
 			if( user.password === inputedPassword)
 			{
-				jwt.sign( { user }, sensibleInformations.JWT_SECRET, (error, token) =>
-				{
-					response.send(token);
-				});
+				tokenHandler.createToken( { "id": user.id, "name": user.name, "surname": user.surname } ).then(
+					( token ) => { response.send( token ); },
+					( error ) => { response.status( 400 ).send( `An error occured : ${error}` ); }
+				);
 			}
 			else response.status( 403 ).send( "Password incorrect")
 		}
 	});
 
-	//jwt.sign
 });
 
 module.exports = router;

@@ -23,21 +23,4 @@ module.exports =
 
 		return ( containsWhatWeAsked && !containsCharacterWeDontWant )
 	},
-
-	// see -> https://goo.gl/Ce9hfh
-	tokenAnalyzerMiddleware: ( request, response, next ) =>
-	{
-		const bearerHeader = request.headers['authorization'];
-
-		if(typeof bearerHeader !== 'undefined')
-		{
-			const bearer = bearerHeader.split(' ');
-			const bearerToken = bearer[1];
-
-			request.token = bearerToken;
-
-			next();
-		}
-		else response.status( 403 ).send("Token undefined");
-	}
 }

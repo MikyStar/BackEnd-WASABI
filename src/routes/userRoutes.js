@@ -1,12 +1,12 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const User = require( '../model/schemas/user' );
-const validation = require('../model/validation');
+const tokenHandler = require('../model/tokenHandler');
 const sensibleInformations = require('../assets/sensibleInformations');
 
 const router = express.Router();
 
-router.get( '/user', validation.tokenAnalyzerMiddleware, ( request, response ) =>
+router.get( '/user', tokenHandler.tokenAnalyzerMiddleware, ( request, response ) =>
 {
 	jwt.verify(request.token, sensibleInformations.JWT_SECRET, (error, authentification) =>
 	{
@@ -33,7 +33,7 @@ router.get( '/user', validation.tokenAnalyzerMiddleware, ( request, response ) =
 	});
 } );
 
-router.get( '/user/:id', validation.tokenAnalyzerMiddleware, ( request, response ) =>
+router.get( '/user/:id', tokenHandler.tokenAnalyzerMiddleware, ( request, response ) =>
 {
 	jwt.verify( request.token, sensibleInformations.JWT_SECRET, ( error, authentification ) =>
 	{
@@ -57,13 +57,13 @@ router.post( '/user', ( request, response ) =>
 {
 	let json = request.body;
 
-	if ( !validation.checkAlphaNumeric( json.name ) )
+	if ( !tokenHandler.checkAlphaNumeric( json.name ) )
 		response.status( 400 ).send( "Name not alphanumeric, try to remove accents.");
-	else if ( !validation.checkAlphaNumeric( json.surname ) )
+	else if ( !tokenHandler.checkAlphaNumeric( json.surname ) )
 		response.status( 400 ).send( "Surname not alphanumeric, try to remove accents." );
-	else if( !validation.checkEmail( json.mail ) )
+	else if( !tokenHandler.checkEmail( json.mail ) )
 		response.status( 400 ).send( "Email type not valid." );
-	else if (!validation.checkPassword(json.password) )
+	else if (!tokenHandler.checkPassword(json.password) )
 		response.status( 400 ).send( "Bad password, it should contain : \n- Two uppercase letters\n- Two digits\n- Three lower case letters\n- Have a length between 6 and 20\n- It can not contains ' \" & ? +");
 	else
 		User.create( { name: json.name, surname: json.surname, mail: json.mail, authentificationMethod: json.authentificationMethod, password : json.password }, (error) =>
@@ -84,7 +84,7 @@ router.post( '/user', ( request, response ) =>
 		});
 } );
 
-router.put( '/user/:id', validation.tokenAnalyzerMiddleware, (request, response) =>
+router.put( '/user/:id', tokenHandler.tokenAnalyzerMiddleware, (request, response) =>
 {
 	jwt.verify( request.token, sensibleInformations.JWT_SECRET, ( error, authentification ) =>
 	{
@@ -119,7 +119,7 @@ router.put( '/user/:id', validation.tokenAnalyzerMiddleware, (request, response)
 	});
 });
 
-router.delete( '/user/:id', validation.tokenAnalyzerMiddleware, (request, response) =>
+router.delete( '/user/:id', tokenHandler.tokenAnalyzerMiddleware, (request, response) =>
 {
 	jwt.verify( request.token, sensibleInformations.JWT_SECRET, ( error, authentification ) =>
 	{
