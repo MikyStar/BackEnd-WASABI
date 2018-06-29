@@ -8,10 +8,8 @@ const router = express.Router();
 
 router.get( '/user', tokenHandler.tokenAnalyzerMiddleware, ( request, response ) =>
 {
-	jwt.verify(request.token, sensibleInformations.JWT_SECRET, (error, authentification) =>
-	{
-		if( error ) response.status( 403 ).send("Authentification failed");
-		else
+	tokenHandler.verifyToken(request.token).then(
+		( user ) =>
 		{
 			User.find( ( error, result ) =>
 			{
@@ -29,16 +27,15 @@ router.get( '/user', tokenHandler.tokenAnalyzerMiddleware, ( request, response )
 					response.send( safeResponse );
 				}
 			} );
-		}
-	});
+		},
+		( error ) => { response.status( 403 ).send( `Authentification failed : ${error}` ); }
+	);
 } );
 
 router.get( '/user/:id', tokenHandler.tokenAnalyzerMiddleware, ( request, response ) =>
 {
-	jwt.verify( request.token, sensibleInformations.JWT_SECRET, ( error, authentification ) =>
-	{
-		if ( error ) response.status( 403 ).send( "Authentification failed" );
-		else
+	tokenHandler.verifyToken( request.token ).then(
+		( user ) =>
 		{
 			let idOfUserIMLookingFor = request.params.id;
 
@@ -47,10 +44,11 @@ router.get( '/user/:id', tokenHandler.tokenAnalyzerMiddleware, ( request, respon
 				if ( error )
 					response.status( 400 ).send( error );
 				else
-					response.send( {'id' : result._id, 'name' : result.name, 'surname' : result.surname} );
+					response.send( { 'id': result._id, 'name': result.name, 'surname': result.surname } );
 			} );
-		}
-	});
+		},
+		( error ) => { response.status( 403 ).send( `Authentification failed : ${error}` ); }
+	);
 } );
 
 router.post( '/user', ( request, response ) =>
@@ -84,19 +82,16 @@ router.post( '/user', ( request, response ) =>
 		});
 } );
 
-router.put( '/user/:id', tokenHandler.tokenAnalyzerMiddleware, (request, response) =>
+router.put( '/user', tokenHandler.tokenAnalyzerMiddleware, (request, response) =>
 {
-	jwt.verify( request.token, sensibleInformations.JWT_SECRET, ( error, authentification ) =>
-	{
-		if ( error ) response.status( 403 ).send( "Authentification failed" );
-		else
+	tokenHandler.verifyToken( request.token ).then(
+		( user ) =>
 		{
-			let userToUpdate = request.params.id;
 			let elementToUpdate = request.body;
 
-			if(authentification.user._id === userToUpdate)
+			if( !(elementToUpdate.id || elementToUpdate._id) )
 			{
-				User.findByIdAndUpdate( { _id: userToUpdate }, elementToUpdate, ( error ) =>
+				User.findByIdAndUpdate( { _id: user.id }, elementToUpdate, ( error ) =>
 				{
 					if ( error )
 					{
@@ -113,10 +108,11 @@ router.put( '/user/:id', tokenHandler.tokenAnalyzerMiddleware, (request, respons
 						response.send( "User updated" );
 				} ).then();
 			}
-			else response.status( 403 ).send("You can not update an other user's informations.")
-
-		}
-	});
+			else
+				response.status( 403 ).send("You can not change the id");
+		},
+		( error ) => { response.status( 403 ).send( "Authentification failed" ); }
+	);
 });
 
 router.delete( '/user/:id', tokenHandler.tokenAnalyzerMiddleware, (request, response) =>

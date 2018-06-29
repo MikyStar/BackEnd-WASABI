@@ -13,6 +13,8 @@ module.exports =
 			const bearer = bearerHeader.split( ' ' );
 			const bearerToken = bearer[1];
 
+			// Injects on attribute token in the request that contains the token
+			// (the next() part of the middleware can now access it trough the request object)
 			request.token = bearerToken;
 
 			next();
@@ -22,7 +24,7 @@ module.exports =
 
 	createToken : ( jsonToTokenize ) =>
 	{
-		return new Promise( (resolve, reject) =>
+		return new Promise( (resolve, reject ) =>
 		{
 			jwt.sign( jsonToTokenize, sensibleInformations.JWT_SECRET, { expiresIn: 60 }, ( error, token ) =>
 			{
@@ -30,8 +32,21 @@ module.exports =
 					resolve(token);
 				else
 					reject( error );
-			} );
+			});
 		});
+	},
 
+	verifyToken : (token) =>
+	{
+		return new Promise( (resolve, reject ) =>
+		{
+			jwt.verify( token, sensibleInformations.JWT_SECRET, ( error, user ) =>
+			{
+				if ( !error )
+					resolve( user );
+				else
+					reject( error );
+			});
+		});
 	}
 }
