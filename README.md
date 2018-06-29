@@ -206,7 +206,6 @@ mongod --dbpath [ Path of the folder where I want my DB ]
 ### Launch the shell
 
 ```sh
-mongod --dbpath [ Path of the folder where I want my DB ]
 mongo --host [ Adress and port where mongod listens on ]
 ```
 
