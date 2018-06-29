@@ -30,7 +30,7 @@ passport.use( new GoogleStrategy(
 	{
 		if( !user )
 		{
-			User.create( { name, surname, mail: email, authentificationMethod: 'google', googleID }, ( error ) =>
+			User.create( { name, surname, mail: email, authentificationMethod: 'google', googleID }, ( error, user ) =>
 			{
 				if ( error )
 				{
@@ -42,12 +42,27 @@ passport.use( new GoogleStrategy(
 							return new Error( `An unexpected error occured, please contact us.\n\n${error}` );
 					}
 				}
+
+				done(error, user);
 			} );
 		}
 		else
-			return new Error("This user already exists");
+			done(error, user);
 	});
 
 	// add to db
 
 }))
+
+passport.serializeUser( (user, done) =>
+{
+	done(null, user._id);
+});
+
+passport.deserializeUser( (id, done) =>
+{
+	User.findById(id, (error, user) =>
+	{
+		done(error, user);
+	});
+});

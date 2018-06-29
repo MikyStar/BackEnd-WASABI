@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const passport = require('passport');
 const fileSystem = require('fs');
+const cookieSession = require('cookie-session');
 const swaggerUI = require('swagger-ui-express');
 const sensibleInformations = require('./assets/sensibleInformations');
 const passportSetup = require('./model/passportSetup');
@@ -11,7 +13,6 @@ const app = express();
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-// Middlewares
 app.use( bodyParser.json() ); // JSON request handling
 app.use( '/api-docs', swaggerUI.serve, swaggerUI.setup( require('./assets/api-documentation.json'))); // Documentation
 
@@ -31,6 +32,15 @@ app.use( '/api-docs', swaggerUI.serve, swaggerUI.setup( require('./assets/api-do
 		else console.log( "Error setting up routes" + error );
 	} );
 })()
+
+app.use(cookieSession(
+{
+	maxAge : 10 * 1000, // 10 seconds
+	keys : sensibleInformations.SESSION.cookieKeys
+}));
+
+app.use( passport.initialize() );
+app.use( passport.session() );
 
 //////////////////////////////////////////////////////////////////////////////////////////
 

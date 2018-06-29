@@ -18,7 +18,7 @@ router.get( '/auth/google', passport.authenticate('google',
 
 router.get( '/auth/google/redirect', passport.authenticate('google'), (request, response) =>
 {
-	response.send("Callback Google");
+	response.send( request.user );
 });
 
 module.exports = router;
