@@ -30,7 +30,7 @@ router.get( '/auth/local', (request, response) =>
 
 router.get( '/auth/logout', (request, response) =>
 {
-	request.logOut();
+	request.logout();
 	response.send("Logged out");
 });
 

@@ -5,7 +5,7 @@ const fileSystem = require('fs');
 const cookieSession = require('cookie-session');
 const swaggerUI = require('swagger-ui-express');
 const sensibleInformations = require('./assets/sensibleInformations');
-const passportSetup = require('./model/passportSetup');
+const passportSetup = require('./controller/passportSetup');
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
