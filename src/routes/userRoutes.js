@@ -1,14 +1,14 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const User = require( '../model/schemas/user' );
-const tokenHandler = require('../model/tokenHandler');
-const sensibleInformations = require('../assets/sensibleInformations');
+const tokenController = require('../controller/tokenController');
+const regex = require('../controller/regex');
 
 const router = express.Router();
 
-router.get( '/user', tokenHandler.tokenAnalyzerMiddleware, ( request, response ) =>
+router.get( '/user', tokenController.tokenAnalyzerMiddleware, ( request, response ) =>
 {
-	tokenHandler.verifyToken(request.token).then(
+	tokenController.verifyToken(request.token).then(
 		( user ) =>
 		{
 			User.find( ( error, result ) =>
@@ -32,9 +32,9 @@ router.get( '/user', tokenHandler.tokenAnalyzerMiddleware, ( request, response )
 	);
 } );
 
-router.get( '/user/:id', tokenHandler.tokenAnalyzerMiddleware, ( request, response ) =>
+router.get( '/user/:id', tokenController.tokenAnalyzerMiddleware, ( request, response ) =>
 {
-	tokenHandler.verifyToken( request.token ).then(
+	tokenController.verifyToken( request.token ).then(
 		( user ) =>
 		{
 			let idOfUserIMLookingFor = request.params.id;
@@ -55,13 +55,13 @@ router.post( '/user', ( request, response ) =>
 {
 	let json = request.body;
 
-	if ( !tokenHandler.checkAlphaNumeric( json.name ) )
+	if ( !regex.checkAlphaNumeric( json.name ) )
 		response.status( 400 ).send( "Name not alphanumeric, try to remove accents.");
-	else if ( !tokenHandler.checkAlphaNumeric( json.surname ) )
+	else if ( !regex.checkAlphaNumeric( json.surname ) )
 		response.status( 400 ).send( "Surname not alphanumeric, try to remove accents." );
-	else if( !tokenHandler.checkEmail( json.mail ) )
+	else if ( !regex.checkEmail( json.mail ) )
 		response.status( 400 ).send( "Email type not valid." );
-	else if (!tokenHandler.checkPassword(json.password) )
+	else if ( !regex.checkPassword(json.password) )
 		response.status( 400 ).send( "Bad password, it should contain : \n- Two uppercase letters\n- Two digits\n- Three lower case letters\n- Have a length between 6 and 20\n- It can not contains ' \" & ? +");
 	else
 		User.create( { name: json.name, surname: json.surname, mail: json.mail, authentificationMethod: json.authentificationMethod, password : json.password }, (error) =>
@@ -82,9 +82,9 @@ router.post( '/user', ( request, response ) =>
 		});
 } );
 
-router.put( '/user', tokenHandler.tokenAnalyzerMiddleware, (request, response) =>
+router.put( '/user', tokenController.tokenAnalyzerMiddleware, (request, response) =>
 {
-	tokenHandler.verifyToken( request.token ).then(
+	tokenController.verifyToken( request.token ).then(
 		( user ) =>
 		{
 			let elementToUpdate = request.body;
@@ -115,9 +115,9 @@ router.put( '/user', tokenHandler.tokenAnalyzerMiddleware, (request, response) =
 	);
 });
 
-router.delete( '/user', tokenHandler.tokenAnalyzerMiddleware, (request, response) =>
+router.delete( '/user', tokenController.tokenAnalyzerMiddleware, (request, response) =>
 {
-	tokenHandler.verifyToken( request.token ).then(
+	tokenController.verifyToken( request.token ).then(
 		( user ) =>
 		{
 			let userToDelete = user.id;

@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const passport = require('passport');
 const User = require( '../model/schemas/user' );
-const tokenHandler = require( '../model/tokenHandler' );
+const tokenController = require( '../controller/tokenController' );
 
 router.get( '/auth/local', (request, response) =>
 {
@@ -18,7 +18,7 @@ router.get( '/auth/local', (request, response) =>
 		{
 			if ( user.password === inputedPassword )
 			{
-				tokenHandler.createToken( { "id": user.id, "name": user.name, "surname": user.surname } ).then(
+				tokenController.createToken( { "id": user.id, "name": user.name, "surname": user.surname } ).then(
 					( token ) => { response.send( token ); },
 					( error ) => { response.status( 400 ).send( `An error occured : ${error}` ); }
 				);
@@ -41,7 +41,7 @@ router.get( '/auth/google', passport.authenticate('google',
 
 router.get( '/auth/google/redirect', passport.authenticate('google'), (request, response) =>
 {
-	tokenHandler.createToken( { "id": request.user.id, "name": request.user.name, "surname": request.user.surname } ).then(
+	tokenController.createToken( { "id": request.user.id, "name": request.user.name, "surname": request.user.surname } ).then(
 		( token ) => { response.send( token ); },
 		( error ) => { response.status( 400 ).send( `An error occured : ${error}` ); }
 	);
