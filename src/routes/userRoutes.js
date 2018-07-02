@@ -1,8 +1,8 @@
 const express = require('express');
-const jwt = require('jsonwebtoken');
 const User = require( '../model/schemas/user' );
 const tokenController = require('../controller/tokenController');
 const regex = require('../controller/regex');
+const userController = require('../controller/userController');
 
 const router = express.Router();
 
@@ -11,22 +11,10 @@ router.get( '/user', tokenController.tokenAnalyzerMiddleware, ( request, respons
 	tokenController.verifyToken(request.token).then(
 		( user ) =>
 		{
-			User.find( ( error, result ) =>
-			{
-				if ( error )
-					response.status( 400 ).send( error );
-				else
-				{
-					let safeResponse = new Array();
-
-					result.forEach( ( element ) =>
-					{
-						safeResponse.push( { 'id': element._id, 'name': element.name, 'surname': element.surname } );
-					} );
-
-					response.send( safeResponse );
-				}
-			} );
+			userController.getAllSafely().then(
+				(users) => { response.send(users) },
+				( error ) => { response.status( 400 ).send(`An unexpected error occured : ${error}`) }
+			)
 		},
 		( error ) => { response.status( 403 ).send( `Authentification failed : ${error}` ); }
 	);
