@@ -2,6 +2,7 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20');
 const sensibleInformations = require('../assets/sensibleInformations');
 const User = require('../model/schemas/user');
+const userController = require('../controller/userController')
 
 passport.use( new GoogleStrategy(
 	{
@@ -59,11 +60,8 @@ passport.serializeUser( ( user, done ) =>
 
 passport.deserializeUser( ( id, done ) =>
 {
-	User.findById(id).then( (error, user) =>
-	{
-		if( !error )
-			done( null, user.id );
-		else
-			done( error, null );
-	});
+	userController.findByIDSafely(id).then(
+		( user ) => { done( null, user.id ); },
+		( error ) => { done( error, null ); }
+	);
 } );

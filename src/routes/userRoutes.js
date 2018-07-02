@@ -27,13 +27,10 @@ router.get( '/user/:id', tokenController.tokenAnalyzerMiddleware, ( request, res
 		{
 			let idOfUserIMLookingFor = request.params.id;
 
-			User.findById( idOfUserIMLookingFor, ( error, result ) =>
-			{
-				if ( error )
-					response.status( 400 ).send( error );
-				else
-					response.send( { 'id': result._id, 'name': result.name, 'surname': result.surname } );
-			} );
+			userController.findByIDSafely(idOfUserIMLookingFor).then(
+				(user) => { response.send(user) },
+				( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ) }
+			)
 		},
 		( error ) => { response.status( 403 ).send( `Authentification failed : ${error}` ); }
 	);

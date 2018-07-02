@@ -25,7 +25,21 @@ module.exports =
 		});
 	},
 
-	findByID : ( id ) =>
+	findByIDSafely : ( id ) =>
+	{
+		return new Promise( (resolve, reject) =>
+		{
+			User.findById( id, ( error, result ) =>
+			{
+				if ( error )
+					reject(error);
+				else
+					resolve( { 'id': result._id, 'name': result.name, 'surname': result.surname } );
+			} );
+		});
+	},
+
+	findOne : ( jsonCarateristicInformation ) =>
 	{
 
 	},
