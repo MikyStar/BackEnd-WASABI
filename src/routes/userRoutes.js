@@ -1,5 +1,4 @@
 const express = require('express');
-const User = require( '../model/schemas/user' );
 const tokenController = require('../controller/tokenController');
 const regex = require('../controller/regex');
 const userController = require('../controller/userController');

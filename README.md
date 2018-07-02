@@ -18,6 +18,7 @@ This is the repository containing the backend code for the PedalBoard of WASABI'
 - [Swagger UI](https://swagger.io/tools/swagger-ui/)
 - [JWT](https://github.com/auth0/node-jsonwebtoken)
 - [Passport](http://www.passportjs.org/)
+- [Bcrypt](https://www.npmjs.com/package/bcrypt)
 
 ## Passport strategies
 
