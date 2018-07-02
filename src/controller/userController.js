@@ -69,7 +69,17 @@ module.exports =
 
 	update : (id, jsonUpdate) =>
 	{
+		return new Promise( (resolve, reject) =>
+		{
+			User.findByIdAndUpdate( { _id: id }, jsonUpdate, ( error, user ) =>
+			{
+				if ( error )
+					reject(error);
 
+				if(user)
+					resolve(user);
+			});
+		});
 	},
 
 	remove : (id) =>
