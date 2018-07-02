@@ -11,8 +11,18 @@ router.get( '/user', tokenController.tokenAnalyzerMiddleware, ( request, respons
 	tokenController.verifyToken(request.token).then(
 		( user ) =>
 		{
-			userController.getAllSafely().then(
-				(users) => { response.send(users) },
+			userController.getAll().then(
+				(users) =>
+				{
+					let safeResponse = new Array();
+
+					users.forEach( ( element ) =>
+					{
+						safeResponse.push( { 'id': element._id, 'name': element.name, 'surname': element.surname } );
+					} );
+
+					response.send(safeResponse)
+				},
 				( error ) => { response.status( 400 ).send(`An unexpected error occured : ${error}`) }
 			)
 		},
@@ -27,8 +37,11 @@ router.get( '/user/:id', tokenController.tokenAnalyzerMiddleware, ( request, res
 		{
 			let idOfUserIMLookingFor = request.params.id;
 
-			userController.findByIDSafely(idOfUserIMLookingFor).then(
-				(user) => { response.send(user) },
+			userController.findByID(idOfUserIMLookingFor).then(
+				(user) =>
+				{
+					response.send( { 'id': user._id, 'name': user.name, 'surname': user.surname })
+				},
 				( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ) }
 			)
 		},

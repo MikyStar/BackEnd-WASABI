@@ -62,7 +62,7 @@ passport.serializeUser( ( user, done ) =>
 
 passport.deserializeUser( ( id, done ) =>
 {
-	userController.findByIDSafely(id).then(
+	userController.findByID(id).then(
 		( user ) => { done( null, user.id ); },
 		( error ) => { done( error, null ); }
 	);

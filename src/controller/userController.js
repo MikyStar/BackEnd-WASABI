@@ -2,7 +2,7 @@ const User = require('../model/schemas/user');
 
 module.exports =
 {
-	getAllSafely : () =>
+	getAll : () =>
 	{
 		return new Promise( (resolve, reject) =>
 		{
@@ -11,21 +11,12 @@ module.exports =
 				if ( error )
 					reject(error)
 				else
-				{
-					let safeResponse = new Array();
-
-					result.forEach( ( element ) =>
-					{
-						safeResponse.push( { 'id': element._id, 'name': element.name, 'surname': element.surname } );
-					} );
-
-					resolve(safeResponse);
-				}
+					resolve(result);
 			} );
 		});
 	},
 
-	findByIDSafely : ( id ) =>
+	findByID : ( id ) =>
 	{
 		return new Promise( (resolve, reject) =>
 		{
@@ -34,7 +25,7 @@ module.exports =
 				if ( error )
 					reject(error);
 				else
-					resolve( { 'id': result._id, 'name': result.name, 'surname': result.surname } );
+					resolve( result );
 			} );
 		});
 	},
