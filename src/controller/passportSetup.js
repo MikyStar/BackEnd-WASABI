@@ -27,13 +27,19 @@ passport.use( new GoogleStrategy(
 		let surname = profile.name.familyName;
 		let googleID = profile.id;
 
-		User.findOne( { googleID }, (error, user) =>
-		{
-			if( !user )
+		userController.findOne( { googleID } ).then(
+			(user) =>
 			{
-				User.create( { name, surname, mail: email, authentificationMethod: 'google', googleID }, ( error, user ) =>
-				{
-					if ( error )
+				done(null, user);
+			},
+			(error) =>
+			{
+				userController.create( { name, surname, mail: email, authentificationMethod: 'google', googleID }).then(
+					(user) =>
+					{
+						done(null, user);
+					},
+					( error ) =>
 					{
 						switch ( error.code )
 						{
@@ -43,13 +49,9 @@ passport.use( new GoogleStrategy(
 								return new Error( `An unexpected error occured, please contact us.\n\n${error}` );
 						}
 					}
-
-					done(null, user);
-				} );
+				)
 			}
-			else
-				done(null, user);
-		});
+		);
 	}
 ));
 

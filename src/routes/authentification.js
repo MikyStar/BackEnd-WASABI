@@ -2,30 +2,32 @@ const router = require('express').Router();
 const passport = require('passport');
 const User = require( '../model/schemas/user' );
 const tokenController = require( '../controller/tokenController' );
+const userController = require('../controller/userController');
 
 router.get( '/auth/local', (request, response) =>
 {
 	const inputedMail = request.query.mail;
 	const inputedPassword = request.query.password;
 
-	User.findOne( { mail: inputedMail }, ( error, user ) =>
-	{
-		if ( error )
-			response.status( 400 ).send( error );
-		else if ( !user )
-			response.status( 400 ).send( "There's no user signed in with that email" );
-		else
+	userController.findOne({ mail : inputedMail}).then(
+		(user) =>
 		{
-			if ( user.password === inputedPassword )
+			if( !user )
+				response.status( 400 ).send( "There's no user signed in with that email" );
+			else
 			{
-				tokenController.createToken( { "id": user.id, "name": user.name, "surname": user.surname } ).then(
-					( token ) => { response.send( token ); },
-					( error ) => { response.status( 400 ).send( `An error occured : ${error}` ); }
-				);
+				if ( user.password === inputedPassword )
+				{
+					tokenController.createToken( { "id": user.id, "name": user.name, "surname": user.surname } ).then(
+						( token ) => { response.send( token ); },
+						( error ) => { response.status( 400 ).send( `An error occured : ${error}` ); }
+					);
+				}
+				else response.status( 403 ).send( "Password incorrect" )
 			}
-			else response.status( 403 ).send( "Password incorrect" )
-		}
-	} );
+		},
+		( error ) =>{ response.status( 400 ).send(`An unexpected error occured : ${error}`); }
+	)
 });
 
 router.get( '/auth/logout', (request, response) =>

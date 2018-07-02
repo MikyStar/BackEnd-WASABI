@@ -41,12 +41,30 @@ module.exports =
 
 	findOne : ( jsonCarateristicInformation ) =>
 	{
-
+		return new Promise( (resolve, reject) =>
+		{
+			User.findOne( jsonCarateristicInformation, ( error, user ) =>
+			{
+				if( error )
+					reject( error );
+				else
+					resolve( user );
+			} );
+		});
 	},
 
 	create : ( json ) =>
 	{
-
+		return new Promise( (resolve, reject) =>
+		{
+			User.create( json, ( error, user ) =>
+			{
+				if( error )
+					reject(error);
+				else
+					resolve(user);
+			} );
+		});
 	},
 
 	update : (id, jsonUpdate) =>
