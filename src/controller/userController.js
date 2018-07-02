@@ -75,6 +75,15 @@ module.exports =
 
 	remove : (id) =>
 	{
-
+		return new Promise( (resolve, reject) =>
+		{
+			User.findByIdAndRemove( { _id: id }, ( error, user ) =>
+			{
+				if ( error )
+					reject( error );
+				else
+					resolve(user);
+			});
+		});
 	}
 }

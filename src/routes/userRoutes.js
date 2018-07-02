@@ -91,10 +91,7 @@ router.put( '/user', tokenController.tokenAnalyzerMiddleware, (request, response
 			if( !(elementToUpdate.id || elementToUpdate._id) )
 			{
 				userController.update(user.id, elementToUpdate).then(
-					(user) =>
-					{
-						response.send( "User updated" );
-					},
+					(user) => { response.send( "User updated" ); },
 					( error ) =>
 					{
 						switch ( error.code )
@@ -122,11 +119,16 @@ router.delete( '/user', tokenController.tokenAnalyzerMiddleware, (request, respo
 		{
 			let userToDelete = user.id;
 
-			User.findByIdAndRemove( { _id: userToDelete }, ( error ) =>
-			{
-				if ( error )
-					response.status( 400 ).send( `An eunexpected error occured, please contact us.\n\n${error}` );
-			} ).then( response.send( "User removed" ) );
+			userController.remove(userToDelete).then(
+				(user) =>
+				{
+					if(user)
+						response.send("Removed successfully");
+					else
+						response.status( 400 ).send( `An unexpected error occured, please contact us.\n\n${error}` );
+				},
+				( error ) => response.status( 400 ).send( `An unexpected error occured, please contact us.\n\n${error}` )
+			)
 		},
 		( error ) =>{ response.status( 403 ).send( "Authentification failed" ); }
 	);
