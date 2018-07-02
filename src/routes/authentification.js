@@ -30,7 +30,8 @@ router.get( '/auth/local', (request, response) =>
 
 router.get( '/auth/logout', (request, response) =>
 {
-	// TODO w/ passport
+	request.logOut();
+	response.send("Logged out");
 });
 
 router.get( '/auth/google', passport.authenticate('google',
