@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const passport = require('passport');
 const tokenController = require( '../controller/tokenController' );
-const userController = require('../controller/userController');
+const userController = require('../controller/entities/userController');
 const passwordEncryption = require('../controller/passwordEncryption');
 
 router.get( '/auth/local', (request, response) =>

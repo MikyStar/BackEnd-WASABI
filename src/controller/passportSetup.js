@@ -2,7 +2,7 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20');
 const sensibleInformations = require('../assets/sensibleInformations');
 const User = require('../model/schemas/user');
-const userController = require('../controller/userController')
+const userController = require('../controller/entities/userController')
 
 passport.use( new GoogleStrategy(
 	{
