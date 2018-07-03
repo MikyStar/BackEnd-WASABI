@@ -1,5 +1,5 @@
-const User = require('../model/schemas/user');
-const passwordEncryption = require('../controller/passwordEncryption');
+const User = require('../../model/schemas/user');
+const passwordEncryption = require('../../controller/passwordEncryption');
 
 module.exports =
 {
