@@ -45,6 +45,39 @@ module.exports =
 		});
 	},
 
+	create : async ( json ) =>
+	{
+		let password, name, surname;
+
+		await passwordEncryption.encrypt( json.password ).then(
+			( hash ) => { password = hash; },
+			( error ) => { return new Error( error ) }
+		);
+
+		function uperCaseFirstLetter( string )
+		{
+			return string.charAt( 0 ).toUpperCase() + string.slice( 1 );
+		}
+
+		surname = json.surname.toUpperCase();
+		name = uperCaseFirstLetter( json.name );
+
+		json.password = password;
+		json.name = name;
+		json.surname = surname;
+
+		return new Promise( ( resolve, reject ) =>
+		{
+			User.create( json, ( error, user ) =>
+			{
+				if ( error )
+					reject( error );
+				else
+					resolve( user );
+			} );
+		} );
+	},
+
 	update : (id, jsonUpdate) =>
 	{
 		return new Promise( (resolve, reject) =>
@@ -74,38 +107,3 @@ module.exports =
 		});
 	}
 }
-
-async function create( json )
-{
-	let password, name, surname;
-
-	await passwordEncryption.encrypt( json.password ).then(
-		( hash ) => { password = hash; },
-		( error ) => { return new Error( error ) }
-	);
-
-	function uperCaseFirstLetter( string )
-	{
-		return string.charAt( 0 ).toUpperCase() + string.slice( 1 );
-	}
-
-	surname = json.surname.toUpperCase();
-	name = uperCaseFirstLetter( json.name );
-
-	json.password = password;
-	json.name = name;
-	json.surname = surname;
-
-	return new Promise( ( resolve, reject ) =>
-	{
-		User.create( json, ( error, user ) =>
-		{
-			if ( error )
-				reject( error );
-			else
-				resolve( user );
-		} );
-	} );
-}
-
-module.exports.create = create;

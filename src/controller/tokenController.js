@@ -26,7 +26,7 @@ module.exports =
 	{
 		return new Promise( (resolve, reject ) =>
 		{
-			jwt.sign( jsonToTokenize, sensibleInformations.JWT_SECRET, { expiresIn: 60 }, ( error, token ) =>
+			jwt.sign( jsonToTokenize, sensibleInformations.JWT_SECRET, { expiresIn: "1d" }, ( error, token ) =>
 			{
 				if ( !error )
 					resolve(token);
