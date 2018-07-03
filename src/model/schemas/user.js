@@ -1,4 +1,5 @@
 const mongoose = require( 'mongoose' );
+const Bank = require('./bank');
 
 const User = mongoose.model( 'user', new mongoose.Schema(
 {
@@ -34,10 +35,9 @@ const User = mongoose.model( 'user', new mongoose.Schema(
 		trim: true,
 		sparse : true // To allow having multiple null entries
 	},
-	password :
-	{
-		type : String
-	}
+	password: String,
+	banks : [ Bank ]
+
 }));
 
 module.exports = User;
