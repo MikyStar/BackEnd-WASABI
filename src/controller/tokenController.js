@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const sensibleInformations = require('../assets/sensibleInformations');
+const userController = require('../controller/entities/userController');
 
 module.exports =
 {
@@ -36,7 +37,7 @@ module.exports =
 		});
 	},
 
-	verifyToken : (token) =>
+	verifyToken : async (token) =>
 	{
 		return new Promise( (resolve, reject ) =>
 		{
@@ -47,6 +48,23 @@ module.exports =
 				else
 					reject( error );
 			});
+		});
+	},
+
+	verifyTokenAndRetrieveUser : async (token) =>
+	{
+		return new Promise( (resolve, reject) =>
+		{
+			module.exports.verifyToken(token).then(
+				(user) =>
+				{
+					userController.findByID(user.id).then(
+						(user) => { resolve(user) },
+						(error) => { reject(error); }
+					)
+				},
+				(error) => { reject(error) ;}
+			)
 		});
 	}
 }

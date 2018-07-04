@@ -121,22 +121,16 @@ module.exports =
 		});
 	},
 
-	addBank : async (userID, bankJSON) =>
+	addBank : async (user, bankJSON) =>
 	{
 		return new Promise( (resolve, reject) =>
 		{
-			module.exports.findByID(userID).then(
-				(user) =>
-				{
-					user.banks.push(bankJSON);
+			user.banks.push( bankJSON );
 
-					module.exports.saveChanges(user).then(
-						(user) => { resolve(user); },
-						(error) => { reject(error); }
-					)
-				},
-				(error) => { reject(error) }
-			);
+			module.exports.saveChanges( user ).then(
+				( user ) => { resolve( user ); },
+				( error ) => { reject( error ); }
+			)
 		});
 	}
 }
