@@ -1,3 +1,5 @@
+const userController = require('../entities/userController');
+
 module.exports =
 {
 	addBank: async ( user, bankJSON ) =>
@@ -6,7 +8,7 @@ module.exports =
 		{
 			user.banks.push( bankJSON );
 
-			module.exports.saveChanges( user ).then(
+			userController.saveChanges( user ).then(
 				( user ) => { resolve( user ); },
 				( error ) => { reject( error ); }
 			)
@@ -42,14 +44,23 @@ module.exports =
 		});
 	},
 
-	findOne : async (user, id) =>
+	update : async (user, id, jsonUpdate) =>
 	{
+		return new Promise( (resolve, reject) =>
+		{
+			module.exports.findById(user, id).then(
+				(bank) =>
+				{
+					bank.set(jsonUpdate);
 
-	},
-
-	update : async (user, id) =>
-	{
-
+					userController.saveChanges(user).then(
+						(user) => { resolve(bank); },
+						(error) => { reject(error); }
+					)
+				},
+				(error) => { reject(error); }
+			)
+		});
 	},
 
 	remove : async (user, id) =>

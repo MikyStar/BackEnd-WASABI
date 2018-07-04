@@ -44,4 +44,26 @@ router.get('/bank/:id', tokenController.tokenAnalyzerMiddleware, (request, respo
 	)
 });
 
+router.put('/bank/:id', tokenController.tokenAnalyzerMiddleware, (request, response) =>
+{
+	tokenController.verifyTokenAndRetrieveUser(request.token).then(
+		(user) =>
+		{
+			let newInfos = request.body;
+
+			if( !newInfos.dateCreation && !newInfos.presets && !newInfos.id && !newInfos._id )
+			{
+				bankController.update(user, request.params.id, request.body).then(
+					(bank) => { response.send("Bank updated"); },
+					( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ); }
+				);
+			}
+			else
+				response.status(400).send("You have no permission to change these fields");
+
+		},
+		( error ) => { response.status( 403 ).send( `Authentification failed : ${error}` ); }
+	)
+});
+
 module.exports = router;
