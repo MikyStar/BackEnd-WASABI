@@ -7,12 +7,14 @@ const Preset = mongoose.model( 'preset', new mongoose.Schema(
 		label :
 		{
 			type: String,
-			trim: true
+			trim: true,
+			required : true
 		},
 		date:
 		{
 			type: Date,
-			trim: true
+			trim: true,
+			default : Date.now
 		},
 		plugins : [ Plugin.schema ],
 		connexions : [ Connexion.schema ]

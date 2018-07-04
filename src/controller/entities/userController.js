@@ -105,5 +105,38 @@ module.exports =
 					resolve(user);
 			});
 		});
+	},
+
+	saveChanges : async (user) =>
+	{
+		return new Promise( (resolve, reject) =>
+		{
+			user.save( (error) =>
+			{
+				if(error)
+					reject(error);
+				else
+					resolve(user);
+			});
+		});
+	},
+
+	addBank : async (userID, bankJSON) =>
+	{
+		return new Promise( (resolve, reject) =>
+		{
+			module.exports.findByID(userID).then(
+				(user) =>
+				{
+					user.banks.push(bankJSON);
+
+					module.exports.saveChanges(user).then(
+						(user) => { resolve(user); },
+						(error) => { reject(error); }
+					)
+				},
+				(error) => { reject(error) }
+			);
+		});
 	}
 }

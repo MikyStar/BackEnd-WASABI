@@ -1,9 +1,7 @@
-const express = require('express');
+const router = require('express').Router();
 const tokenController = require('../controller/tokenController');
 const regex = require('../controller/regex');
 const userController = require('../controller/entities/userController');
-
-const router = express.Router();
 
 router.get( '/user', tokenController.tokenAnalyzerMiddleware, ( request, response ) =>
 {

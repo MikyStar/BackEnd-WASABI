@@ -6,12 +6,13 @@ const Bank = mongoose.model( 'bank', new mongoose.Schema(
 		label:
 		{
 			type: String,
-			trim: true
+			trim: true,
+			required : true
 		},
 		dateCreation:
 		{
 			type : Date,
-			required : true
+			default : Date.now
 		},
 		presets: [ Preset.schema ]
 	} ) );
