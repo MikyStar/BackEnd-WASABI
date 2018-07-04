@@ -65,6 +65,20 @@ module.exports =
 
 	remove : async (user, id) =>
 	{
+		return new Promise( (resolve, reject) =>
+		{
+			module.exports.findById(user, id).then(
+				( bank ) =>
+				{
+					user.banks.pull(id);
 
+					userController.saveChanges(user).then(
+						(user) => { resolve(user); },
+						(error) => { reject(error); }
+					)
+				},
+				( error ) => { reject( error ); }
+			)
+		});
 	}
 }

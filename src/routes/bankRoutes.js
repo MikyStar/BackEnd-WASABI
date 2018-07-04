@@ -66,4 +66,18 @@ router.put('/bank/:id', tokenController.tokenAnalyzerMiddleware, (request, respo
 	)
 });
 
+router.delete('/bank/:id', tokenController.tokenAnalyzerMiddleware, (request, response) =>
+{
+	tokenController.verifyTokenAndRetrieveUser(request.token).then(
+		(user) =>
+		{
+			bankController.remove(user, request.params.id).then(
+				(user) =>  { response.send("Bank removed") },
+				( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ); }
+			)
+		},
+		( error ) => { response.status( 403 ).send( `Authentification failed : ${error}` ); }
+	)
+});
+
 module.exports = router;
