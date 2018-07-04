@@ -119,18 +119,5 @@ module.exports =
 					resolve(user);
 			});
 		});
-	},
-
-	addBank : async (user, bankJSON) =>
-	{
-		return new Promise( (resolve, reject) =>
-		{
-			user.banks.push( bankJSON );
-
-			module.exports.saveChanges( user ).then(
-				( user ) => { resolve( user ); },
-				( error ) => { reject( error ); }
-			)
-		});
 	}
 }
