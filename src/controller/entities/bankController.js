@@ -24,7 +24,22 @@ module.exports =
 
 	findById : async (user, id) =>
 	{
+		return new Promise( (resolve, reject) =>
+		{
+			let found = false;
 
+			user.banks.forEach( element =>
+			{
+				if(element.id == id)
+				{
+					found = true;
+					resolve(element)
+				}
+			});
+
+			if(!found)
+				reject("Bank not found");
+		});
 	},
 
 	findOne : async (user, id) =>
