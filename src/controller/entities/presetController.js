@@ -44,7 +44,7 @@ module.exports =
 		} );
 	},
 
-	update: async ( bank, id, jsonUpdate ) =>
+	update: async (user, bank, id, jsonUpdate ) =>
 	{
 		return new Promise( ( resolve, reject ) =>
 		{
@@ -63,7 +63,7 @@ module.exports =
 		} );
 	},
 
-	remove: async ( bank, id ) =>
+	remove: async (user, bank, id ) =>
 	{
 		return new Promise( ( resolve, reject ) =>
 		{
