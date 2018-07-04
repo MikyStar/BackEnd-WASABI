@@ -13,7 +13,7 @@ const Bank = mongoose.model( 'bank', new mongoose.Schema(
 			type : Date,
 			required : true
 		},
-		presets: [ Preset ]
+		presets: [ Preset.schema ]
 	} ) );
 
 module.exports = Bank;

@@ -14,8 +14,8 @@ const Preset = mongoose.model( 'preset', new mongoose.Schema(
 			type: Date,
 			trim: true
 		},
-		plugins : [ Plugin ],
-		connexions : [ Connexion ]
+		plugins : [ Plugin.schema ],
+		connexions : [ Connexion.schema ]
 	}));
 
 module.exports = Preset;

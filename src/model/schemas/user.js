@@ -36,7 +36,7 @@ const User = mongoose.model( 'user', new mongoose.Schema(
 		sparse : true // To allow having multiple null entries
 	},
 	password: String,
-	banks : [ Bank ]
+	banks : [ Bank.schema ]
 
 }));
 
