@@ -1,4 +1,5 @@
-const userController = require( '../entities/userController' );
+const userController = require( './userController' );
+const bankController = require('./bankController');
 
 module.exports =
 {
@@ -15,16 +16,7 @@ module.exports =
 		});
 	},
 
-	getAll : async (bank) =>
-	{
-		return new Promise( ( resolve, reject ) =>
-		{
-			resolve( bank.presets );
-			reject( null );
-		} );
-	},
-
-	findById: async (user,  id ) =>
+	findById : async (user,  id ) =>
 	{
 		return new Promise( ( resolve, reject ) =>
 		{
@@ -67,22 +59,39 @@ module.exports =
 		} );
 	},
 
-	remove: async (user, bank, id ) =>
+	remove: async (user, id ) =>
 	{
 		return new Promise( ( resolve, reject ) =>
 		{
-			module.exports.findById( bank, id ).then(
-				( bank ) =>
-				{
-					bank.presets.pull( id );
+			let found = false;
 
-					userController.saveChanges( user ).then(
-						( user ) => { resolve( user ); },
-						( error ) => { reject( error ); }
-					)
+			bankController.getAll( user ).then(
+				( banks ) =>
+				{
+					for(let i = 0; i < banks.length; i++)
+					{
+						for(let j = 0; j < banks[i].presets.length; i ++)
+						{
+							if( banks[i].presets[j].id == id )
+							{
+								user.banks[i].presets.pull(id);
+								found = true;
+
+								userController.saveChanges(user).then(
+									(user) => { },
+									(error) => { reject(error); }
+								)
+							}
+						}
+					}
+
+					if(found)
+						resolve(banks);
+					else
+						reject("Preset not found");
 				},
 				( error ) => { reject( error ); }
-			)
+			);
 		} );
 	}
 }

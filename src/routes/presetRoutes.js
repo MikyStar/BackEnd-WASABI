@@ -23,26 +23,6 @@ router.post( '/preset/:bankID', tokenController.tokenAnalyzerMiddleware, ( reque
 	)
 } );
 
-router.get('/preset/:bankID', tokenController.tokenAnalyzerMiddleware, (request, response) =>
-{
-	tokenController.verifyTokenAndRetrieveUser(request.token).then(
-		(user) =>
-		{
-			bankController.findById(user, request.params.bankID).then(
-				(bank) =>
-				{
-					presetController.getAll(bank).then(
-						(presets) => { response.send(presets) },
-						( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ); }
-					)
-				},
-				( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ); }
-			)
-		},
-		( error ) => { response.status( 403 ).send( `Authentification failed : ${error}` ); }
-	)
-});
-
 router.put('/preset/:presetID', tokenController.tokenAnalyzerMiddleware, (request, response) =>
 {
 	tokenController.verifyTokenAndRetrieveUser(request.token).then(
@@ -50,6 +30,20 @@ router.put('/preset/:presetID', tokenController.tokenAnalyzerMiddleware, (reques
 		{
 			presetController.update(user, request.params.presetID, request.body).then(
 				(bank) => { response.send("Preset updated"); },
+				( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ); }
+			);
+		},
+		( error ) => { response.status( 403 ).send( `Authentification failed : ${error}` ); }
+	);
+});
+
+router.delete('/preset/:presetID', tokenController.tokenAnalyzerMiddleware, (request, response) =>
+{
+	tokenController.verifyTokenAndRetrieveUser(request.token).then(
+		(user) =>
+		{
+			presetController.remove(user, request.params.presetID).then(
+				(user) => { response.send("Preset deleted"); },
 				( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ); }
 			);
 		},
