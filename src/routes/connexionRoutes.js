@@ -37,4 +37,18 @@ router.post('/connexion/:presetID', tokenController.tokenAnalyzerMiddleware, (re
 	)
 });
 
+router.put('/connexion/:connexionID', tokenController.tokenAnalyzerMiddleware, (request, response) =>
+{
+	tokenController.verifyTokenAndRetrieveUser(request.token).then(
+		(user) =>
+		{
+			connexionController.update( user, request.params.connexionID, request.body).then(
+				(result) => { response.send("Connexion updated") },
+				( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ); }
+			)
+		},
+		( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ); }
+	)
+});
+
 module.exports = router;

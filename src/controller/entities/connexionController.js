@@ -1,5 +1,4 @@
 const userController = require( './userController' );
-const presetController = require( './bankController' );
 const presetController = require( './presetController' );
 
 module.exports =
@@ -38,5 +37,48 @@ module.exports =
 		});
 	},
 
+	findByID : async (user, id) =>
+	{
+		return new Promise( (resolve, reject) =>
+		{
+			let found = false;
+
+			module.exports.getAll(user).then(
+				(connexions) =>
+				{
+					connexions.forEach(connexion =>
+					{
+						if(connexion.id == id)
+						{
+							found = true;
+							resolve(connexion);
+						}
+					});
+
+					if(!found)
+						reject("Connexion not found");
+				},
+				(error) => { reject(error); }
+			)
+		});
+	},
+
+	update : async (user, id, jsonUpdate) =>
+	{
+		return new Promise( (resolve, reject) =>
+		{
+			module.exports.findByID(user, id).then(
+				(connexion) =>
+				{
+					connexion.set(jsonUpdate);
+
+					userController.saveChanges( user ).then(
+						( user ) => { resolve( connexion ); },
+						( error ) => { reject( error ); }
+					)
+				},
+				(error) => { reject(error); }
+			)
+		});
 	}
 }
