@@ -59,6 +59,27 @@ module.exports =
 		} );
 	},
 
+	getAll : async (user) =>
+	{
+		return new Promise( (resolve, reject) =>
+		{
+			let arrayPresets = [];
+
+			bankController.getAll(user).then(
+				(banks) =>
+				{
+					banks.forEach( bank =>
+					{
+						bank.presets.forEach( preset => { arrayPresets.push(preset); } )
+					});
+
+					resolve(arrayPresets);
+				},
+				(error) => { reject(error); }
+			);
+		});
+	},
+
 	remove: async (user, id ) =>
 	{
 		return new Promise( ( resolve, reject ) =>
