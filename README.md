@@ -81,7 +81,7 @@ Just add /api-docs to the URL of the server and you'll find the documentation
 
 ## Modify
 
-Just update src/api-documentation.js using [those conventions.](https://editor.swagger.io/)
+Just update api-documentation.js using [those conventions.](https://editor.swagger.io/)
 
 <br />
 <hr />
