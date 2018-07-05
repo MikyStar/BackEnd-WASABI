@@ -24,37 +24,41 @@ module.exports =
 		} );
 	},
 
-	findById: async ( bank, id ) =>
+	findById: async (user,  id ) =>
 	{
 		return new Promise( ( resolve, reject ) =>
 		{
 			let found = false;
 
-			bank.preset.forEach( element =>
+			user.banks.forEach( bank =>
 			{
-				if ( element.id == id )
-				{
-					found = true;
-					resolve( element )
-				}
-			} );
+				bank.presets.forEach( preset =>
+					{
+						if(preset.id == id)
+						{
+							resolve(preset);
+							found = true;
+						}
+					}
+				);
+			});
 
-			if ( !found )
-				reject( "Bank not found" );
+			if(!found)
+				reject("Preset not found");
 		} );
 	},
 
-	update: async (user, bank, id, jsonUpdate ) =>
+	update: async (user, id, jsonUpdate ) =>
 	{
 		return new Promise( ( resolve, reject ) =>
 		{
-			module.exports.findById( bank, id ).then(
+			module.exports.findById( user, id ).then(
 				( preset ) =>
 				{
 					preset.set( jsonUpdate );
 
 					userController.saveChanges( user ).then(
-						( user ) => { resolve( bank ); },
+						( user ) => { resolve( preset ); },
 						( error ) => { reject( error ); }
 					)
 				},

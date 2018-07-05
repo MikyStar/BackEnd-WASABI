@@ -43,4 +43,18 @@ router.get('/preset/:bankID', tokenController.tokenAnalyzerMiddleware, (request,
 	)
 });
 
+router.put('/preset/:presetID', tokenController.tokenAnalyzerMiddleware, (request, response) =>
+{
+	tokenController.verifyTokenAndRetrieveUser(request.token).then(
+		(user) =>
+		{
+			presetController.update(user, request.params.presetID, request.body).then(
+				(bank) => { response.send("Preset updated"); },
+				( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ); }
+			);
+		},
+		( error ) => { response.status( 403 ).send( `Authentification failed : ${error}` ); }
+	);
+});
+
 module.exports = router;
