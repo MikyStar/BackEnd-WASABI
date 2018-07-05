@@ -41,6 +41,6 @@ router.get('/preset/:bankID', tokenController.tokenAnalyzerMiddleware, (request,
 		},
 		( error ) => { response.status( 403 ).send( `Authentification failed : ${error}` ); }
 	)
-})
+});
 
 module.exports = router;

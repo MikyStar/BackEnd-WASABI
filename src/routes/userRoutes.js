@@ -8,20 +8,13 @@ router.get( '/user', tokenController.tokenAnalyzerMiddleware, ( request, respons
 	tokenController.verifyToken(request.token).then(
 		( user ) =>
 		{
-			userController.getAll().then(
-				(users) =>
+			userController.findByID(user.id).then(
+				(user) =>
 				{
-					let safeResponse = new Array();
-
-					users.forEach( ( element ) =>
-					{
-						safeResponse.push( { 'id': element._id, 'name': element.name, 'surname': element.surname } );
-					} );
-
-					response.send(safeResponse)
+					response.send( {'_id' : user.id, 'name' : user.name, 'surname' : user.surname, 'mail' : user.mail, 'banks' : user.banks} );
 				},
-				( error ) => { response.status( 400 ).send(`An unexpected error occured : ${error}`) }
-			)
+				( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ) }
+			);
 		},
 		( error ) => { response.status( 403 ).send( `Authentification failed : ${error}` ); }
 	);
