@@ -26,22 +26,28 @@ module.exports =
 
 	findById : async (user, id) =>
 	{
-		return new Promise( (resolve, reject) =>
+		return new Promise( ( resolve, reject ) =>
 		{
 			let found = false;
 
-			user.banks.forEach( element =>
-			{
-				if(element.id == id)
+			module.exports.getAll( user ).then(
+				( banks ) =>
 				{
-					found = true;
-					resolve(element)
-				}
-			});
+					banks.forEach( bank =>
+					{
+						if ( bank.id == id )
+						{
+							found = true;
+							resolve( bank );
+						}
+					} );
 
-			if(!found)
-				reject("Bank not found");
-		});
+					if ( !found )
+						reject( "Bank not found" );
+				},
+				( error ) => { reject( error ); }
+			)
+		} );
 	},
 
 	update : async (user, id, jsonUpdate) =>
