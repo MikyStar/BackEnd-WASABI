@@ -9,17 +9,43 @@ module.exports =
 		SETTINGS : "settings"
 	}),
 
+	findByID: async (entityType, user, id ) =>
+	{
+		return new Promise( ( resolve, reject ) =>
+		{
+			let found = false;
+
+			eval(entityType).getAll( user ).then(
+				( entities ) =>
+				{
+					entities.forEach( entity =>
+					{
+						if ( entity.id == id )
+						{
+							found = true;
+							resolve( entity );
+						}
+					} );
+
+					if ( !found )
+						reject( "Connexion not found" );
+				},
+				( error ) => { reject( error ); }
+			)
+		} );
+	},
+
 	update : async (entityType, user, id, jsonUpdate ) =>
 	{
 		return new Promise( ( resolve, reject ) =>
 		{
-			eval(entityType).findByID( user, id ).then(
-				( plugin ) =>
+			module.exports.findByID(entityType, user, id ).then(
+				( entity ) =>
 				{
-					plugin.set( jsonUpdate );
+					entity.set( jsonUpdate );
 
 					eval(module.exports.EntityType.USER).saveChanges( user ).then(
-						( user ) => { resolve( plugin ); },
+						( user ) => { resolve( entity ); },
 						( error ) => { reject( error ); }
 					)
 				},
