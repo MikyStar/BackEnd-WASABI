@@ -1,6 +1,7 @@
 const router = require( 'express' ).Router();
 const tokenController = require( '../controller/tokenController' );
 const pluginController = require('../controller/entities/pluginController');
+const entitiesController = require('../controller/entities/entitiesController')
 
 router.get('/plugin', tokenController.tokenAnalyzerMiddleware, (request, response) =>
 {
@@ -35,7 +36,7 @@ router.put('/plugin/:pluginID', tokenController.tokenAnalyzerMiddleware, (reques
 	tokenController.verifyTokenAndRetrieveUser(request.token).then(
 		( user ) =>
 		{
-			pluginController.update(user, request.params.pluginID, request.body).then(
+			entitiesController.update(entitiesController.EntityType.PLUGIN, user, request.params.pluginID, request.body).then(
 				(plugin) => { response.send("Plugin updated"); },
 				( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ); }
 			)
