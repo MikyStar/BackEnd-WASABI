@@ -1,17 +1,11 @@
-const bankController = require('./bankController');
-const connexionController = require('./connexionController');
-const pluginController = require('./pluginController');
-const presetController = require('./presetController');
-const userController = require('./userController');
-
 module.exports =
 {
 	EntityType : Object.freeze({
-		CONNEXION : "connexionController",
-		PLUGIN : "pluginController",
-		PRESET : "presetController",
-		USER : "userController",
-		BANK : "bankController",
+		CONNEXION: "require('./connexionController')",
+		PLUGIN: "require('./pluginController')",
+		PRESET: "require('./presetController')",
+		USER: "require('./userController')",
+		BANK: "require('./bankController')",
 		SETTINGS : "settings"
 	}),
 
@@ -24,7 +18,7 @@ module.exports =
 				{
 					plugin.set( jsonUpdate );
 
-					userController.saveChanges( user ).then(
+					eval(module.exports.EntityType.USER).saveChanges( user ).then(
 						( user ) => { resolve( plugin ); },
 						( error ) => { reject( error ); }
 					)
