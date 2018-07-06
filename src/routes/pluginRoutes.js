@@ -30,4 +30,18 @@ router.post('/plugin/:presetID', tokenController.tokenAnalyzerMiddleware, (reque
 	)
 });
 
+router.put('/plugin/:pluginID', tokenController.tokenAnalyzerMiddleware, (request, response) =>
+{
+	tokenController.verifyTokenAndRetrieveUser(request.token).then(
+		( user ) =>
+		{
+			pluginController.update(user, request.params.pluginID, request.body).then(
+				(plugin) => { response.send("Plugin updated"); },
+				( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ); }
+			)
+		},
+		( error ) => { response.status( 403 ).send( `Authentification failed : ${error}` ); }
+	);
+});
+
 module.exports = router;

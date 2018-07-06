@@ -41,5 +41,50 @@ module.exports =
 				(error) => { reject(error); }
 			);
 		} );
-	}
+	},
+
+	findByID: async ( user, id ) =>
+	{
+		return new Promise( ( resolve, reject ) =>
+		{
+			let found = false;
+
+			module.exports.getAll( user ).then(
+				( plugins ) =>
+				{
+					plugins.forEach( plugin =>
+					{
+						if ( plugin.id == id )
+						{
+							found = true;
+							resolve( plugin );
+						}
+					} );
+
+					if ( !found )
+						reject( "Plugin not found" );
+				},
+				( error ) => { reject( error ); }
+			)
+		} );
+	},
+
+	update: async ( user, id, jsonUpdate ) =>
+	{
+		return new Promise( ( resolve, reject ) =>
+		{
+			module.exports.findByID( user, id ).then(
+				( plugin ) =>
+				{
+					plugin.set( jsonUpdate );
+
+					userController.saveChanges( user ).then(
+						( user ) => { resolve( plugin ); },
+						( error ) => { reject( error ); }
+					)
+				},
+				( error ) => { reject( error ); }
+			)
+		} );
+	},
 }
