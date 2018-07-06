@@ -52,6 +52,7 @@ module.exports =
 				( banks ) =>
 				{
 					mainLoop :
+
 					for(let i = 0; banks.length; i++)
 					{
 						let theBank = banks[i];
@@ -75,7 +76,9 @@ module.exports =
 											userController.saveChanges( user ).then(
 												( user ) => { },
 												( error ) => { reject( error ); }
-											)
+											);
+											
+											break mainLoop;
 										}
 									}
 								}
@@ -83,14 +86,11 @@ module.exports =
 							}
 						}
 					}
-
-					if ( !found )
-						reject( "Plugin not found" );
-					else
-						resolve(user)
+					found ? resolve( user ) : reject( "Plugin not found" )
 				},
 				( error ) => reject(error)
 			);
+
 		});
 	}
 }
