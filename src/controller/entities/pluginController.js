@@ -1,5 +1,6 @@
 const userController = require( './userController' );
 const presetController = require('./presetController');
+const bankController = require('./bankController');
 
 module.exports =
 {
@@ -43,48 +44,53 @@ module.exports =
 		} );
 	},
 
-	findByID: async ( user, id ) =>
+	removePlugin : async (user, id) =>
 	{
-		return new Promise( ( resolve, reject ) =>
+		return new Promise( (resolve, reject) =>
 		{
-			let found = false;
-
-			module.exports.getAll( user ).then(
-				( plugins ) =>
+			bankController.getAll(user).then(
+				( banks ) =>
 				{
-					plugins.forEach( plugin =>
+					mainLoop :
+					for(let i = 0; banks.length; i++)
 					{
-						if ( plugin.id == id )
+						let theBank = banks[i];
+
+						if(theBank.presets.length != 0)
 						{
-							found = true;
-							resolve( plugin );
+							for(let j = 0; banks[i].presets.length; j++)
+							{
+								let thePreset = theBank.presets[j];
+
+								if(thePreset.plugins.length != 0)
+								{
+									for(let k = 0; theBank.presets[j].plugins.length; k++) // Too deep bro
+									{
+										if ( thePreset.plugins[k].id == id)
+										{
+											thePreset.plugins.pull(id);
+
+											found = true;
+
+											userController.saveChanges( user ).then(
+												( user ) => { },
+												( error ) => { reject( error ); }
+											)
+										}
+									}
+								}
+
+							}
 						}
-					} );
+					}
 
 					if ( !found )
 						reject( "Plugin not found" );
+					else
+						resolve(user)
 				},
-				( error ) => { reject( error ); }
-			)
-		} );
-	},
-
-	update: async ( user, id, jsonUpdate ) =>
-	{
-		return new Promise( ( resolve, reject ) =>
-		{
-			module.exports.findByID( user, id ).then(
-				( plugin ) =>
-				{
-					plugin.set( jsonUpdate );
-
-					userController.saveChanges( user ).then(
-						( user ) => { resolve( plugin ); },
-						( error ) => { reject( error ); }
-					)
-				},
-				( error ) => { reject( error ); }
-			)
-		} );
-	},
+				( error ) => reject(error)
+			);
+		});
+	}
 }

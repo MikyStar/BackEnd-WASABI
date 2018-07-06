@@ -45,4 +45,18 @@ router.put('/plugin/:pluginID', tokenController.tokenAnalyzerMiddleware, (reques
 	);
 });
 
+router.delete('/plugin/:pluginID', tokenController.tokenAnalyzerMiddleware, (request, response) =>
+{
+	tokenController.verifyTokenAndRetrieveUser(request.token).then(
+		(user) =>
+		{
+			pluginController.removePlugin(user, request.params.pluginID).then(
+				( bank ) => { response.send("Plugin deleted") },
+				( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ); }
+			)
+		},
+		( error ) => { response.status( 403 ).send( `Authentification failed : ${error}` ); }
+	);
+});
+
 module.exports = router;
