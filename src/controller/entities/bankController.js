@@ -32,21 +32,7 @@ module.exports =
 
 	update : async (user, id, jsonUpdate) =>
 	{
-		return new Promise( (resolve, reject) =>
-		{
-			module.exports.findById(user, id).then(
-				(bank) =>
-				{
-					bank.set(jsonUpdate);
-
-					userController.saveChanges(user).then(
-						( ) => { resolve(bank); },
-						(error) => { reject(error); }
-					)
-				},
-				(error) => { reject(error); }
-			)
-		});
+		return await entitiesController.update(entitiesController.EntityType.BANK, user, id, jsonUpdate);
 	},
 
 	remove : async (user, id) =>
