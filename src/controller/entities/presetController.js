@@ -4,15 +4,21 @@ const entitiesController = require('./entitiesController');
 
 module.exports =
 {
-	addPreset : async (user, bank, jsonPreset) =>
+	addPreset : async (user, bankID, jsonPreset) =>
 	{
 		return new Promise( (resolve, reject) =>
 		{
-			bank.presets.push( jsonPreset );
+			bankController.findById(user, bankID).then(
+				(bank) =>
+				{
+					bank.presets.push( jsonPreset );
 
-			userController.saveChanges( user ).then(
-				( user ) => { resolve( user ); },
-				( error ) => { reject( error ); }
+					userController.saveChanges( user ).then(
+						( user ) => { resolve( user ); },
+						( error ) => { reject( error ); }
+					);
+				},
+				(error) => reject(error)
 			);
 		});
 	},

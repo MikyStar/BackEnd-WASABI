@@ -22,14 +22,8 @@ router.post( '/preset/:bankID', tokenController.tokenAnalyzerMiddleware, ( reque
 	tokenController.verifyTokenAndRetrieveUser( request.token ).then(
 		( user ) =>
 		{
-			bankController.findById(user, request.params.bankID).then(
-				(bank) =>
-				{
-					presetController.addPreset(user, bank, request.body ).then(
-						( user ) => { response.send( "Preset added to user" ); },
-						( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ); }
-					)
-				},
+			presetController.addPreset( user, request.params.bankID, request.body ).then(
+				( user ) => { response.send( "Preset added to user" ); },
 				( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ); }
 			)
 		},
