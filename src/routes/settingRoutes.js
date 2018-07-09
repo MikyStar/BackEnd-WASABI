@@ -44,4 +44,18 @@ router.put('/setting/:settingID', tokenController.tokenAnalyzerMiddleware, (requ
 	)
 });
 
+router.delete('/setting/:settingID', tokenController.tokenAnalyzerMiddleware, (request, response) =>
+{
+	tokenController.verifyTokenAndRetrieveUser(request.token).then(
+		(user) =>
+		{
+			settingController.remove(user, request.params.settingID).then(
+				( ) => response.send("Setting deleted"),
+				( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ); }
+			)
+		},
+		( error ) => { response.status( 403 ).send( `Authentification failed : ${error}` ); }
+	)
+});
+
 module.exports = router;
