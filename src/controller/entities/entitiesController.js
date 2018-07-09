@@ -6,7 +6,7 @@ module.exports =
 		PRESET: "require('./presetController')",
 		USER: "require('./userController')",
 		BANK: "require('./bankController')",
-		SETTINGS : "settings"
+		SETTINGS : "require('./settingController')"
 	}),
 
 	findByID : async (entityType, user, id ) =>
