@@ -5,7 +5,7 @@ const DATABASE_CONNECTION = `mongodb://${sensibleInformations.DATABASE_USER}:${s
 
 exports.initializeMongo = () =>
 {
-	console.log(`Trying to connect to MongoDB (${ DATABASE_CONNECTION })`);
+	console.log(`Trying to connect to MongoDB`);
 
 	mongoose.connect(DATABASE_CONNECTION);
 	mongoose.Promise = global.Promise;
@@ -16,6 +16,6 @@ exports.initializeMongo = () =>
 
 	database.once('open', () =>
 	{
-		console.log("Connected to MongoDB");
+		console.log("Connected to MongoDB\n");
 	});
 }

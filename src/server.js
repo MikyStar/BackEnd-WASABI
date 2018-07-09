@@ -38,7 +38,7 @@ app.use( passport.session() );
 
 app.listen( process.env.port || sensibleInformations.SERVER_PORT, () =>
 {
-	console.log( `NodeJS server running on port ${ sensibleInformations.SERVER_PORT }` );
+	console.log( `NodeJS server running` );
 	require( './model/database' ).initializeMongo();
 } );
 
