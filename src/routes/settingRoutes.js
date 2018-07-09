@@ -30,4 +30,18 @@ router.post('/setting/:pluginID', tokenController.tokenAnalyzerMiddleware, (requ
 	);
 });
 
+router.put('/setting/:settingID', tokenController.tokenAnalyzerMiddleware, (request, response) =>
+{
+	tokenController.verifyTokenAndRetrieveUser(request.token).then(
+		(user) =>
+		{
+			settingController.update(user, request.params.settingID, request.body).then(
+				( ) => response.send("Setting updated"),
+				( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ); }
+			)
+		},
+		( error ) => { response.status( 403 ).send( `Authentification failed : ${error}` ); }
+	)
+});
+
 module.exports = router;
