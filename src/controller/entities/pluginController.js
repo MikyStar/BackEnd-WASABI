@@ -1,6 +1,7 @@
 const userController = require( './userController' );
 const presetController = require('./presetController');
 const bankController = require('./bankController');
+const entitiesController = require('./entitiesController');
 
 module.exports =
 {
@@ -25,6 +26,16 @@ module.exports =
 		});
 	},
 
+	findByID : async (user, id) =>
+	{
+		return await entitiesController.findByID(entitiesController.EntityType.PLUGIN, user, id);
+	},
+
+	update : async (user, id, jsonUpdate) =>
+	{
+		return await entitiesController.update(entitiesController.EntityType.PLUGIN, user, id, jsonUpdate);
+	},
+
 	addPlugin : async (user, presetID, jsonCreation) =>
 	{
 		return new Promise( ( resolve, reject ) =>
@@ -43,6 +54,7 @@ module.exports =
 			);
 		} );
 	},
+
 
 	removePlugin : async (user, id) =>
 	{
@@ -74,15 +86,14 @@ module.exports =
 											found = true;
 
 											userController.saveChanges( user ).then(
-												( user ) => { },
+												( ) => { },
 												( error ) => { reject( error ); }
 											);
-											
+
 											break mainLoop;
 										}
 									}
 								}
-
 							}
 						}
 					}
