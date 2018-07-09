@@ -9,7 +9,7 @@ module.exports =
 		SETTINGS : "settings"
 	}),
 
-	findByID: async (entityType, user, id ) =>
+	findByID : async (entityType, user, id ) =>
 	{
 		return new Promise( ( resolve, reject ) =>
 		{
@@ -28,7 +28,7 @@ module.exports =
 					} );
 
 					if ( !found )
-						reject( "Connexion not found" );
+						reject( "Element not found" );
 				},
 				( error ) => { reject( error ); }
 			)
@@ -45,12 +45,14 @@ module.exports =
 					entity.set( jsonUpdate );
 
 					eval(module.exports.EntityType.USER).saveChanges( user ).then(
-						( user ) => { resolve( entity ); },
+						( ) => { resolve( entity ); },
 						( error ) => { reject( error ); }
 					)
 				},
 				( error ) => { reject( error ); }
 			)
 		} );
-	}
+	},
+
+
 }

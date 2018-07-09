@@ -1,3 +1,4 @@
+const entitiesController = require('./entitiesController');
 const userController = require('../entities/userController');
 
 module.exports =
@@ -26,28 +27,7 @@ module.exports =
 
 	findById : async (user, id) =>
 	{
-		return new Promise( ( resolve, reject ) =>
-		{
-			let found = false;
-
-			module.exports.getAll( user ).then(
-				( banks ) =>
-				{
-					banks.forEach( bank =>
-					{
-						if ( bank.id == id )
-						{
-							found = true;
-							resolve( bank );
-						}
-					} );
-
-					if ( !found )
-						reject( "Bank not found" );
-				},
-				( error ) => { reject( error ); }
-			)
-		} );
+		return await entitiesController.findByID(entitiesController.EntityType.BANK, user, id)
 	},
 
 	update : async (user, id, jsonUpdate) =>
@@ -60,7 +40,7 @@ module.exports =
 					bank.set(jsonUpdate);
 
 					userController.saveChanges(user).then(
-						(user) => { resolve(bank); },
+						( ) => { resolve(bank); },
 						(error) => { reject(error); }
 					)
 				},
@@ -74,7 +54,7 @@ module.exports =
 		return new Promise( (resolve, reject) =>
 		{
 			module.exports.findById(user, id).then(
-				( bank ) =>
+				( ) =>
 				{
 					user.banks.pull(id);
 
