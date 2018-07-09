@@ -1,5 +1,6 @@
 const userController = require( './userController' );
 const bankController = require('./bankController');
+const entitiesController = require('./entitiesController');
 
 module.exports =
 {
@@ -16,47 +17,14 @@ module.exports =
 		});
 	},
 
-	findById : async (user,  id ) =>
+	findById : async (user, id ) =>
 	{
-		return new Promise( ( resolve, reject ) =>
-		{
-			let found = false;
-
-			user.banks.forEach( bank =>
-			{
-				bank.presets.forEach( preset =>
-					{
-						if(preset.id == id)
-						{
-							resolve(preset);
-							found = true;
-						}
-					}
-				);
-			});
-
-			if(!found)
-				reject("Preset not found");
-		} );
+		return await entitiesController.findByID(entitiesController.EntityType.PRESET, user, id);
 	},
 
 	update: async (user, id, jsonUpdate ) =>
 	{
-		return new Promise( ( resolve, reject ) =>
-		{
-			module.exports.findById( user, id ).then(
-				( preset ) =>
-				{
-					preset.set( jsonUpdate );
-
-					userController.saveChanges( user ).then(
-						( user ) => { resolve( preset ); },
-						( error ) => { reject( error ); }
-					)
-				},
-				( error ) => { reject( error ); }
-			)
-		} );
+		return await entitiesController.update(entitiesController.EntityType.PRESET, user, id, jsonUpdate);
 	},
 
 	getAll : async (user) =>
@@ -99,7 +67,7 @@ module.exports =
 								found = true;
 
 								userController.saveChanges(user).then(
-									(user) => { },
+									( ) => { },
 									(error) => { reject(error); }
 								)
 							}
