@@ -51,4 +51,18 @@ router.put('/connexion/:connexionID', tokenController.tokenAnalyzerMiddleware, (
 	)
 });
 
+router.delete('/connexion/:connexionID', tokenController.tokenAnalyzerMiddleware, (request, response) =>
+{
+	tokenController.verifyTokenAndRetrieveUser(request.token).then(
+		(user) =>
+		{
+			connexionController.remove(user, request.params.connexionID).then(
+				( ) => response.send("Connexion deleted"),
+				( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ); }
+			);
+		},
+		( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ); }
+	);
+});
+
 module.exports = router;
