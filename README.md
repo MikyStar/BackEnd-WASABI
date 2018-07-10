@@ -34,6 +34,8 @@ This is the repository containing the backend code for the PedalBoard of WASABI'
 
 ## Initialization
 
+`REQUIRE : MongoDB & Mongod & NodeJS`
+
 1. cd [ Path of the project ]
 2. npm install
 3. git clone https://github.com/mrvautin/adminMongo.git && cd adminMongo
