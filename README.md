@@ -50,7 +50,7 @@ This is the repository containing the backend code for the PedalBoard of WASABI'
 ```
 6. cd ..
 7. mkdir database
-8. sudo chown -R `id -u` database
+8. sudo chown -R \`id -u\` database
 9. mongod --dbpath database
 10. cd database
 11. mongo --host 127.0.0.1:27017
