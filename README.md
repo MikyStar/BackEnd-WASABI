@@ -23,6 +23,7 @@ This is the repository containing the backend code for the PedalBoard of WASABI'
 ## Passport strategies
 
 - Gogle OAuth 2.0
+- GitHub
 
 # Usefull links
 
