@@ -12,8 +12,7 @@ const User = mongoose.model( 'user', new mongoose.Schema(
 	surname :
 	{
 		type : String,
-		trim: true,
-		required : [true, 'A surname required' ]
+		trim: true
 	},
 	mail :
 	{

@@ -51,23 +51,32 @@ module.exports =
 
 		await passwordEncryption.encrypt( json.password ).then(
 			( hash ) => { password = hash; },
-			( error ) => { return new Error( error ) }
+			( error ) => { reject(error) }
 		);
 
-		function uperCaseFirstLetter( string )
-		{
-			return string.charAt( 0 ).toUpperCase() + string.slice( 1 );
-		}
-
-		surname = json.surname.toUpperCase();
-		name = uperCaseFirstLetter( json.name );
-
-		json.password = password;
-		json.name = name;
-		json.surname = surname;
+		function uperCaseFirstLetter( string ) { return string.charAt( 0 ).toUpperCase() + string.slice( 1 ); }
 
 		return new Promise( ( resolve, reject ) =>
 		{
+			if ( json.name == null || json.name == '' ) reject("You should provide a name")
+			else
+			{
+				name = uperCaseFirstLetter( json.name );
+				json.name = name;
+			}
+
+			if ( json.surname != 'undefined' )
+			{
+				surname = json.surname.toUpperCase();
+				json.surname = surname;
+			}
+			else
+			{
+				json.surname = '';
+			}
+
+			json.password = password;
+
 			User.create( json, ( error, user ) =>
 			{
 				if ( error )
