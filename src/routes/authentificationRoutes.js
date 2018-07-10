@@ -56,4 +56,19 @@ router.get( '/auth/google/redirect', passport.authenticate('google'), (request, 
 	);
 });
 
+////////////////////////////////////////////////////////////////////////////////////
+
+router.get( '/auth/github', passport.authenticate('github',
+{
+	scope : [ 'read:user', 'user:email' ]
+}));
+
+router.get( '/auth/github/redirect', passport.authenticate('github'), (request, response) =>
+{
+	tokenController.createToken( { "id": request.user.id, "name": request.user.name, "surname": request.user.surname } ).then(
+		( token ) => { response.send( token ); },
+		( error ) => { response.status( 400 ).send( `An error occured : ${error}` ); }
+	);
+});
+
 module.exports = router;
