@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const passport = require('passport');
+const passport = require('../controller/passportSetup');
 const tokenController = require( '../controller/tokenController' );
 const userController = require('../controller/entities/userController');
 const passwordEncryption = require('../controller/passwordEncryption');
@@ -40,6 +40,8 @@ router.get( '/auth/logout', (request, response) =>
 	request.logout();
 	response.send("Logged out");
 });
+
+////////////////////////////////////////////////////////////////////////////////////
 
 router.get( '/auth/google', passport.authenticate('google',
 {

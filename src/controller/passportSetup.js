@@ -30,26 +30,33 @@ passport.use( new GoogleStrategy(
 		userController.findOne( { googleID } ).then(
 			(user) =>
 			{
-				done(null, user);
+				if(user != null)
+				{
+					done(null, user);
+				}
+				else
+				{
+					userController.create( { name, surname, mail: email, authentificationMethod: 'google', googleID } ).then(
+						( user ) =>
+						{
+							done( null, user );
+						},
+						( error ) =>
+						{
+							switch ( error.code )
+							{
+								case 11000:
+									return new Error( "This mail already exits, choose an other one." );
+								default:
+									return new Error( `An unexpected error occured, please contact us.\n\n${error}` );
+							}
+						}
+					)
+				}
 			},
 			(error) =>
 			{
-				userController.create( { name, surname, mail: email, authentificationMethod: 'google', googleID }).then(
-					(user) =>
-					{
-						done(null, user);
-					},
-					( error ) =>
-					{
-						switch ( error.code )
-						{
-							case 11000:
-								return new Error( "This mail already exits, choose an other one." );
-							default:
-								return new Error( `An unexpected error occured, please contact us.\n\n${error}` );
-						}
-					}
-				)
+				done(error, null);
 			}
 		);
 	}
@@ -67,3 +74,5 @@ passport.deserializeUser( ( id, done ) =>
 		( error ) => { done( error, null ); }
 	);
 } );
+
+module.exports = passport

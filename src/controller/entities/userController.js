@@ -31,7 +31,7 @@ module.exports =
 		});
 	},
 
-	findOne : ( jsonCarateristicInformation ) =>
+	findOne : async ( jsonCarateristicInformation ) =>
 	{
 		return new Promise( (resolve, reject) =>
 		{
