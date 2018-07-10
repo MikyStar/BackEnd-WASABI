@@ -34,6 +34,13 @@ const User = mongoose.model( 'user', new mongoose.Schema(
 		trim: true,
 		sparse : true // To allow having multiple null entries
 	},
+	githubID :
+	{
+		type: String,
+		unique: true,
+		trim: true,
+		sparse: true // To allow having multiple null entries
+	},
 	password: String,
 	banks : [ Bank.schema ]
 

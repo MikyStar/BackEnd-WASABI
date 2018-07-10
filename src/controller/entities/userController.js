@@ -49,10 +49,13 @@ module.exports =
 	{
 		let password, name, surname;
 
-		await passwordEncryption.encrypt( json.password ).then(
-			( hash ) => { password = hash; },
-			( error ) => { reject(error) }
-		);
+		if(json.password)
+		{
+			await passwordEncryption.encrypt( json.password ).then(
+				( hash ) => { password = hash; },
+				( error ) => { password = new Error(error) }
+			);
+		}
 
 		function uperCaseFirstLetter( string ) { return string.charAt( 0 ).toUpperCase() + string.slice( 1 ); }
 
@@ -75,7 +78,10 @@ module.exports =
 				json.surname = '';
 			}
 
-			json.password = password;
+			if(typeof password != Error)
+				json.password = password;
+			else
+				reject(password);
 
 			User.create( json, ( error, user ) =>
 			{
