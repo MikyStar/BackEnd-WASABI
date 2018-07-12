@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const fileSystem = require('fs');
 const swaggerUI = require('swagger-ui-express');
+const cors = require('cors');
 const sensibleInformations = require('./assets/sensibleInformations');
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -33,6 +34,7 @@ app.use( '/api-docs', swaggerUI.serve, swaggerUI.setup( require('./assets/api-do
 
 app.use( passport.initialize() );
 app.use( passport.session() );
+app.use(cors());
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
