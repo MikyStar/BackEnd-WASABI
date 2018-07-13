@@ -51,7 +51,7 @@ router.get( '/auth/google', passport.authenticate('google',
 router.get( '/auth/google/redirect', passport.authenticate('google'), (request, response) =>
 {
 	tokenController.createToken( { "id": request.user.id, "name": request.user.name, "surname": request.user.surname } ).then(
-		( token ) => { response.send( token ); },
+		( token ) => { response.redirect( 301, `http://127.0.0.1:8886/?token=${token}` ); },
 		( error ) => { response.status( 400 ).send( `An error occured : ${error}` ); }
 	);
 });
@@ -66,7 +66,7 @@ router.get( '/auth/github', passport.authenticate('github',
 router.get( '/auth/github/redirect', passport.authenticate('github'), (request, response) =>
 {
 	tokenController.createToken( { "id": request.user.id, "name": request.user.name, "surname": request.user.surname } ).then(
-		( token ) => { response.send( token ); },
+		( token ) => { response.redirect(301, `http://127.0.0.1:8886/?token=${token}` ); },
 		( error ) => { response.status( 400 ).send( `An error occured : ${error}` ); }
 	);
 });
