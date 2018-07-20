@@ -25,6 +25,27 @@ module.exports =
 		});
 	},
 
+	addMultipleBanks : async (user, banksJSON) =>
+	{
+		return new Promise( ( resolve, reject ) =>
+		{
+			if( Array.isArray(banksJSON) )
+			{
+				banksJSON.forEach( element =>
+				{
+					user.banks.push( element );
+				});
+
+				userController.saveChanges( user ).then(
+					( user ) => { resolve( user ); },
+					( error ) => { reject( error ); }
+				)
+			}
+			else
+				reject('Not an array of banks');
+		});
+	},
+
 	findById : async (user, id) =>
 	{
 		return await entitiesController.findByID(entitiesController.EntityType.BANK, user, id)

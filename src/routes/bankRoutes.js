@@ -7,10 +7,20 @@ router.post( '/bank', tokenController.tokenAnalyzerMiddleware, (request, respons
 	tokenController.verifyTokenAndRetrieveUser(request.token).then(
 		( user ) =>
 		{
-			bankController.addBank(user, request.body).then(
-				(user) => { response.send("Bank added to user"); },
-				( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ); }
-			)
+			if(Array.isArray(request.body))
+			{
+				bankController.addMultipleBanks(user, request.body).then(
+					( ) => { response.send("Banks added to user"); },
+					( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ); }
+				);
+			}
+			else
+			{
+				bankController.addBank(user, request.body).then(
+					() => { response.send( "Banks added to user" ); },
+					( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ); }
+				);
+			}
 		},
 		( error ) => { response.status( 403 ).send( `Authentification failed : ${error}` ); }
 	)
