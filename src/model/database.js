@@ -7,7 +7,7 @@ exports.initializeMongo = () =>
 {
 	console.log(`Trying to connect to MongoDB`);
 
-	mongoose.connect(DATABASE_CONNECTION);
+	mongoose.connect( DATABASE_CONNECTION, { useNewUrlParser: true });
 	mongoose.Promise = global.Promise;
 
 	const database = mongoose.connection;
