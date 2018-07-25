@@ -13,7 +13,8 @@ const Plugin = mongoose.model( 'plugin', new mongoose.Schema(
 			x : Number,
 			y : Number
 		},
-		settings: [ Setting.schema ]
-	} ) );
+		settings : Object /* [ Setting.schema ] */
+	},
+	{ _id: false } ) );
 
 module.exports = Plugin;
