@@ -19,7 +19,7 @@ module.exports =
 		// https://www.regextester.com/3319 ; https://goo.gl/Z4et2X
 		const containsWhatWeAsked = /^(?=.*[A-Z].*[A-Z])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{6,20}$/.test( password );
 
-		const containsCharacterWeDontWant = /\'|\"|\&|\?|\s|\+/.test( password );
+		const containsCharacterWeDontWant = /\'|\"|\&|\?|\s|\+|#/.test( password );
 
 		return ( containsWhatWeAsked && !containsCharacterWeDontWant )
 	},
