@@ -73,5 +73,43 @@ module.exports =
 				( error ) => { reject( error ); }
 			)
 		});
+	},
+
+	removeAll : async (user) =>
+	{
+		let allBanks;
+		let sizeBefore;
+		let sizeAfter;
+		let errors = [];
+
+		await module.exports.getAll( user ).then(
+			( banks ) =>
+			{
+				allBanks = banks;
+				sizeBefore = banks.length;
+			},
+			( reject ) => errors.push( reject )
+		);
+
+		for ( let i = 0; i < allBanks.length; i++ )
+		{
+			await module.exports.remove( user, allBanks[i].id ).then(
+				( resolve ) => {},
+				( reject ) => { errors.push(reject) }
+			);
+		}
+
+		await module.exports.getAll( user ).then(
+			( banks ) => sizeAfter = banks.length,
+			( reject ) => errors.push( reject )
+		);
+
+		return new Promise( (resolve, reject) =>
+		{
+			if ( ( sizeBefore == 0 || sizeAfter != sizeBefore) && ( sizeAfter == 0) )
+				resolve();
+			else
+				reject( errors );
+		});
 	}
 }
