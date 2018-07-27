@@ -21,7 +21,7 @@ router.get( '/auth/local', (request, response) =>
 					{
 						if(result)
 							tokenController.createToken( { "id": user.id, "name": user.name, "surname": user.surname } ).then(
-								( token ) => { /* response.redirect( 301, `http://127.0.0.1:8886/?token=${token}`) */ response.send(token) ; },
+								( token ) => { response.send(token) ; },
 								( error ) => { response.status( 400 ).send( `An error occured : ${error}` ); }
 							);
 						else
