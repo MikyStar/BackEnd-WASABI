@@ -6,26 +6,39 @@ services :
 
     backend-wasabi : # How I chose to name my service
         container_name : backend-wasabi # How i chose to name the container, makes it easier to work with it
-        restart : always # If it fails restart it automatically
+        restart : unless-stopped # Stop only if a stop signal is sent to the container
         build : . # With the Dockerfile in this folder
-        command : node server.js
+        command : npm start
         ports :
             - "5001:5001" # Mapping host and container ports
-        volumes :
-            - ./src:/usr/src/backend-wasabi # Map my database created by the JS with the mounting point of the volume in mongo Dockerfile, this way we use a persistant storage, this way it "will use volume of any previous containers and copy it to the new container, ensuring that no data is lost."
-            - /usr/src/backend-wasabi/node_modules
         depends_on :
             - "mongo" # It's going to use "mongo" service, just beneath
+        links :
+            - "mongo"
 
     mongo :
-        container_name : mongo
+        container_name : mongo-db
         image : "mongo" # Name of the image in the Docker Hub Registry
-        restart : always # If it fails restart it automatically
-        ports :
-            - "27017:27017"
+        restart : unless-stopped
+        volumes :
+            - mongo-data:/data/db
+        env_file :
+            ./environments/mongo.env
+        expose :
+            - "27017"
 
     adminmongo :
+        container_name : admin-mongo
         image : "mrvautin/adminmongo"
-        restart : always # If it fails restart it automatically
+        env_file :
+            - ./environments/adminMongo.env
+        restart : unless-stopped
+        depends_on :
+            - "mongo"
+        links :
+            - "mongo"
         ports :
             - "1234:1234"
+
+volumes :
+    mongo-data:
