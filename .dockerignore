@@ -1,11 +1,13 @@
-node_modules
-npm-debug.log
 .editorconfig
 .eslintrc.json
 .gitignore
 .git
-README.md
+.vscode
+.dist
+node_modules
+npm-debug.log
 adminMongo
 database
 test
 environments
+OAuth2.md

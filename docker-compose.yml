@@ -17,7 +17,7 @@ services :
             - "mongo"
 
     mongo :
-        container_name : mongo-db
+        container_name : mongodb
         image : "mongo" # Name of the image in the Docker Hub Registry
         restart : unless-stopped
         volumes :

@@ -11,6 +11,7 @@ WORKDIR /usr/src/backend-wasabi
 
 # Install all the dependencies with the package.json file
 COPY package.json /usr/src/backend-wasabi
+COPY package-lock.json /usr/src/backend-wasabi
 RUN npm cache verify && npm install
 
 # Copy the code of this project to the server
