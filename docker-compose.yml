@@ -8,7 +8,7 @@ services :
         container_name : backend-wasabi # How i chose to name the container, makes it easier to work with it
         restart : unless-stopped # Stop only if a stop signal is sent to the container
         build : . # With the Dockerfile in this folder
-        command : npm start
+        command : npm run deploy
         ports :
             - "5001:5001" # Mapping host and container ports
         depends_on :

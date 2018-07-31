@@ -40,7 +40,7 @@ app.use(cors());
 
 app.listen( process.env.port || sensibleInformations.SERVER_PORT, () =>
 {
-	console.log( `NodeJS server running` );
+	console.log( `NodeJS server running in ${process.env.NODE_ENV} mode.` );
 	require( './model/database' ).initializeMongo();
 } );
 

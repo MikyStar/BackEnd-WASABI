@@ -20,4 +20,4 @@ COPY . /usr/src/backend-wasabi
 EXPOSE 5001
 
 # The command to execute our container
-CMD [ "npm", "start" ]
+CMD [ "npm", "run", "deploy" ]
