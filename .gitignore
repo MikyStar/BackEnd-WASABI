@@ -3,7 +3,6 @@ database/
 .vscode/
 src/assets/sensibleInformations\.js
 adminMongo
-
 \.DS_Store
-
 encryption/
+environments
