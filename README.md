@@ -80,6 +80,25 @@ npm start
 # To view all the screen type screen -ls
 ```
 
+## Deal with Docker
+
+### Run the project
+
+```sh
+docker-compose up
+```
+
+### Access Mongo within Docker
+
+```sh
+docker ps # List containers
+docker exec -it [ mongo container ] /bin/bash # Attach a shell to the container
+cd data/db # Browse where the database folder is
+mongo admin -u [ username ] -p # It will ask to prompt your password
+
+# You are now using the Mongo Shell
+```
+
 # API Documentation
 
 ## Access
