@@ -6,3 +6,5 @@ adminMongo
 \.DS_Store
 encryption/
 environments
+.nyc_output/
+coverage/
