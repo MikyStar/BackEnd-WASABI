@@ -18,16 +18,7 @@ router.post( '/pedal', /* tokenController.tokenAnalyzerMiddleware, */ (request, 
 	let npmPackageName = request.body.npmPackageName;
 	let nodeVersion = request.body.nodeVersion;
 
-	/* serverManager.checkIfNPMPackageAlreadyInstalled( npmPackageName ).then(
-		( resolve ) => response.send( resolve ),
-		( reject ) => response.status( 400 ).send( reject )
-	); */
-
-	containerController.createNPMTestContainer(null, 'theTest', '0.0.0').then(
-		( resolve ) => response.send( resolve ),
-		( reject ) => response.status( 400 ).send( reject )
-	);
-
+	
 });
 
 module.exports = router;
