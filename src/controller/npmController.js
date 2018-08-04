@@ -9,7 +9,7 @@ module.exports =
 	 *
 	 * @param {path} [location] Where we want it to be
 	 *
-	 * @returns {Promise} Resolve returning nothing if everything is ok ; Reject with the error if an error occured.
+	 * @returns {Promise} Can only resolve (with nothing in resolve) : seems like the NPM team wrote the verbosification of the creation in stderr so can't distinguish ....
 	 */
 	initPackageJSON : async ( location ) =>
 	{
@@ -24,11 +24,7 @@ module.exports =
 
 			exec( command, ( stdout, stderr ) =>
 			{
-				// I intentionally not check the error variable because it allways says 'Command failed' even if it works ...
-				if ( !stderr )
-					resolve();
-				else
-					reject( stderr );
+				resolve();
 			} );
 		} );
 	},

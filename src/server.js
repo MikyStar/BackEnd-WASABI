@@ -53,11 +53,7 @@ app.use(cors());
 
 	await npmController.initPackageJSON( sensibleInformations.NPM_PEDALS_LOCATION ).then(
 		() => {},
-		( error ) =>
-		{
-			console.error( `Error while creating the package.json for the pedal folder : ${error}`);
-			process.exit();
-		}
+		() => {}
 	)
 })()
 
