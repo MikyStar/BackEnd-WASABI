@@ -1,24 +1,34 @@
 const router = require( 'express' ).Router();
-const tokenController = require( '../controller/tokenController' );
-const serverManager = require('../controller/serverManager');
-const containerController = require('../controller/containerController');
+const pedalController = require( '../controller/pedalController' );
 
 // TODO after the WAC make it use tokenAnalyzerMiddleware
-router.post( '/pedal', /* tokenController.tokenAnalyzerMiddleware, */ (request, response) =>
+router.post( '/pedal/:npmPedal', (request, response) =>
 {
-	/* tokenController.verifyTokenAndRetrieveUser(request.token).then(
-		( user ) =>
+	let npmPedalName = request.params.npmPedal;
+
+	pedalController.addPedal( npmPedalName ).then(
+		( resolve ) =>
 		{
-
+			if ( resolve.hasBeenUpdated )
+				/* response.redirect( `http://127.0.0.1:8886?pedal=${npmPedalName}`); */
+				response.send( `Your pedal has been updated` );
+			else if ( resolve.hasBeenInstalled )
+				/* response.redirect( `http://127.0.0.1:8886?pedal=${npmPedalName}`); */
+				response.send( `Your pedal has been installed` );
 		},
-		( error ) => { response.status( 403 ).send( `Authentification failed : ${error}` ); }
-	);*/
+		( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ); }
+	)
+});
 
+// TODO after the WAC make it use tokenAnalyzerMiddleware
+router.delete( '/pedal/:npmPedal', (request, response) =>
+{
+	let npmPedalName = request.params.npmPedal;
 
-	let npmPackageName = request.body.npmPackageName;
-	let nodeVersion = request.body.nodeVersion;
-
-	
+	pedalController.removePedal(npmPedalName).then(
+		( ) => response.send( 'Pedal removed' ),
+		( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ); }
+	);
 });
 
 module.exports = router;

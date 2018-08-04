@@ -4,7 +4,9 @@ const passport = require('passport');
 const fileSystem = require('fs');
 const swaggerUI = require('swagger-ui-express');
 const cors = require('cors');
+const exec = require( 'child_process' ).exec;
 const sensibleInformations = require('./assets/sensibleInformations');
+const npmController = require( './controller/npmController' );
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -35,6 +37,25 @@ app.use( '/api-docs', swaggerUI.serve, swaggerUI.setup( require('./assets/api-do
 app.use( passport.initialize() );
 app.use( passport.session() );
 app.use(cors());
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+( async function createPedalDirectoryForNPMInstalls()
+{
+	exec( `mkdir -p ${sensibleInformations.NPM_PEDALS_LOCATION}`, ( stdout, stderr ) =>
+	{
+		if ( stderr )
+		{
+			console.error( `Error while creating the pedal folder : ${stderr}`);
+			process.exit();
+		}
+	} );
+
+	await npmController.initPackageJSON( sensibleInformations.NPM_PEDALS_LOCATION ).then(
+		() => {},
+		() => {}
+	)
+})()
 
 //////////////////////////////////////////////////////////////////////////////////////////
 

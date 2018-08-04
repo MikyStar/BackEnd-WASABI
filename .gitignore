@@ -1,10 +1,11 @@
-node_modules/
-database/
-.vscode/
+node_modules
+database
+.vscode
 src/assets/sensibleInformations\.js
 adminMongo
 \.DS_Store
-encryption/
+encryption
 environments
-.nyc_output/
-coverage/
+.nyc_output
+coverage
+pedals
