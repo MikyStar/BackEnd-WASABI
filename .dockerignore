@@ -11,5 +11,6 @@ database
 test
 environments
 OAuth2.md
-.nyc_output/
-coverage/
+.nyc_output
+coverage
+pedals
