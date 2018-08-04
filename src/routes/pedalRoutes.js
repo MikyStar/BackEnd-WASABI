@@ -10,7 +10,7 @@ router.post( '/pedal/:npmPedal', (request, response) =>
 		( resolve ) =>
 		{
 			if ( resolve.hasBeenUpdated )
-				response.send( `Your pedal has been updated` );
+				response.redirect( `../../test/publication.html?pedal=${npmPedalName}`);
 			else if ( resolve.hasBeenInstalled )
 				response.send( `Your pedal has been installed` );
 		},
