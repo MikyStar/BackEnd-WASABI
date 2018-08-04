@@ -18,9 +18,9 @@ module.exports =
 			let command;
 
 			if( location )
-				command = `cd ${location} && npm init -y`;
+				command = `cd ${location} && npm init -y && npm i`;
 			else
-				command = `npm init -y`;
+				command = `npm init -y && npm i`;
 
 			exec( command, ( stdout, stderr ) =>
 			{
