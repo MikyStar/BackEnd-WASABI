@@ -10,8 +10,10 @@ router.post( '/pedal/:npmPedal', (request, response) =>
 		( resolve ) =>
 		{
 			if ( resolve.hasBeenUpdated )
-				response.redirect( `../../test/publication.html?pedal=${npmPedalName}`);
+				/* response.redirect( `http://127.0.0.1:8886?pedal=${npmPedalName}`); */
+				response.send( `Your pedal has been updated` );
 			else if ( resolve.hasBeenInstalled )
+				/* response.redirect( `http://127.0.0.1:8886?pedal=${npmPedalName}`); */
 				response.send( `Your pedal has been installed` );
 		},
 		( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ); }
