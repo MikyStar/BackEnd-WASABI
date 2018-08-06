@@ -5,7 +5,6 @@ const fileSystem = require('fs');
 const swaggerUI = require('swagger-ui-express');
 const cors = require('cors');
 const exec = require( 'child_process' ).exec;
-const path = require( 'path' );
 const sensibleInformations = require('./assets/sensibleInformations');
 const npmController = require( './controller/npmController' );
 
@@ -15,10 +14,25 @@ const app = express();
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-app.use( bodyParser.json() ); // JSON request handling
-app.use( '/api-docs', swaggerUI.serve, swaggerUI.setup( require('./assets/api-documentation.json'))); // Documentation
+allowJSONBodyHandling();
+setupDocumentation( '/api-docs' );
+setupRoutes();
+setupPassport();
+enableCrossOriginResourceSharing();
+createPedalDirectoryForNPMInstalls( sensibleInformations.NPM_PEDALS_LOCATION );
+launchServerAndConnectToDB();
+serveFolder( '/pedals', '/../pedals' );
+setupTestRoute();
 
-(function setUpRoutes()
+//////////////////////////////////////////////////////////////////////////////////////////
+
+function allowJSONBodyHandling()
+{ app.use( bodyParser.json() ); }
+
+function setupDocumentation( path )
+{ app.use( path, swaggerUI.serve, swaggerUI.setup( require( './assets/api-documentation.json' ) ) ); }
+
+function setupRoutes()
 {
 	const realtiveToNpmPathOfRoutes = './src/routes/';
 	const relativeToFolderPathOfRoutes = './routes/';
@@ -28,51 +42,55 @@ app.use( '/api-docs', swaggerUI.serve, swaggerUI.setup( require('./assets/api-do
 		{
 			files.forEach( file =>
 			{
-				app.use( '/api', require(`${relativeToFolderPathOfRoutes}${file}`));
+				app.use( '/api', require( `${relativeToFolderPathOfRoutes}${file}` ) );
 			} );
 		}
 		else console.log( "Error setting up routes" + error );
 	} );
-})()
+}
 
-app.use( passport.initialize() );
-app.use( passport.session() );
-app.use(cors());
-
-//////////////////////////////////////////////////////////////////////////////////////////
-
-( async function createPedalDirectoryForNPMInstalls()
+function setupPassport()
 {
-	exec( `mkdir -p ${sensibleInformations.NPM_PEDALS_LOCATION}`, ( stdout, stderr ) =>
+	app.use( passport.initialize() );
+	app.use( passport.session() );
+}
+
+function enableCrossOriginResourceSharing()
+{ app.use( cors() ); }
+
+async function createPedalDirectoryForNPMInstalls( location )
+{
+	exec( `mkdir -p ${location}`, ( stdout, stderr ) =>
 	{
 		if ( stderr )
 		{
-			console.error( `Error while creating the pedal folder : ${stderr}`);
+			console.error( `Error while creating the pedal folder : ${stderr}` );
 			process.exit();
 		}
 	} );
 
-	await npmController.initPackageJSON( sensibleInformations.NPM_PEDALS_LOCATION ).then(
-		() => {},
-		() => {}
+	await npmController.initPackageJSON( location ).then(
+		() => { },
+		() => { }
 	)
-})()
+}
 
-//////////////////////////////////////////////////////////////////////////////////////////
-
-app.listen( process.env.port || sensibleInformations.SERVER_PORT, () =>
+function launchServerAndConnectToDB()
 {
-	console.log( `NodeJS server running in ${process.env.NODE_ENV} mode.` );
-	require( './model/database' ).initializeMongo();
-} );
+	app.listen( process.env.port || sensibleInformations.SERVER_PORT, () =>
+	{
+		console.log( `NodeJS server running in ${process.env.NODE_ENV} mode.` );
+		require( './model/database' ).initializeMongo();
+	} );
+}
 
-//////////////////////////////////////////////////////////////////////////////////////////
+function serveFolder( route, folderLocation )
+{ app.use( route, express.static( __dirname + folderLocation ) ); }
 
-app.use( '/pedals', express.static( __dirname + '/../pedals' ) );
-
-//////////////////////////////////////////////////////////////////////////////////////////
-
-app.get('/', (request, response) =>
+function setupTestRoute()
 {
-	response.send(`The server receiver a GET request`);
-});
+	app.get( '/', ( request, response ) =>
+	{
+		response.send( `The server receiver a GET request` );
+	} );
+}
