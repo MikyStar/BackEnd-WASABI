@@ -5,6 +5,7 @@ const fileSystem = require('fs');
 const swaggerUI = require('swagger-ui-express');
 const cors = require('cors');
 const exec = require( 'child_process' ).exec;
+const path = require( 'path' );
 const sensibleInformations = require('./assets/sensibleInformations');
 const npmController = require( './controller/npmController' );
 
@@ -64,6 +65,10 @@ app.listen( process.env.port || sensibleInformations.SERVER_PORT, () =>
 	console.log( `NodeJS server running in ${process.env.NODE_ENV} mode.` );
 	require( './model/database' ).initializeMongo();
 } );
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+app.use( '/pedals', express.static( __dirname + '/../pedals' ) );
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
