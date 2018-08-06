@@ -19,7 +19,12 @@ router.delete( '/pedal/:npmPedal', (request, response) =>
 
 	pedalController.removePedal(npmPedalName).then(
 		( ) => response.send( 'Pedal removed' ),
-		( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ); }
+		( error ) =>
+		{
+			error.message == "This pedal doesn't exists" ? statusCode = 404 : statusCode = 400;
+
+			response.status( statusCode ).send( `An unexpected error occured : ${ error }` );
+		}
 	);
 });
 
