@@ -48,15 +48,32 @@ module.exports =
 			{
 				exec( `npm ${type} --prefix ${sensibleInformations.NPM_PEDALS_LOCATION} ${npmPackage}`, ( theError, stdout, stderr ) =>
 				{
-					if ( !stderr.includes( 'ERR!' ) ) // Because NPM prints warning and errors to the same output
+					let error = manageOutput( stderr ); // Because NPM prints warning and errors to the same output
+
+					if ( !error )
 						resolve();
 					else
-						reject( stderr );
+						reject( error );
 				} );
 			}
 			else
 				reject( new Error( 'Wrong type provided' ) )
 		} );
+
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		function manageOutput( output )
+		{
+			if ( output.includes( 'npm ERR! 404 Not Found:' ))
+				return new Error( 'NPM module not found (404)' )
+			else if ( output.includes( 'ENOSPC' ))
+			{
+				console.error( `NO SPACE REMAINING ON THE SERVER` );
+				return new Error( 'No space remaining on the server' );
+			}
+			else if( output.includes( 'ERR!' ))
+				return new Error( 'An NPM error occured' );
+		}
 	},
 
 	/**
