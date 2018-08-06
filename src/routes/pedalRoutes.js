@@ -7,15 +7,7 @@ router.post( '/pedal/:npmPedal', (request, response) =>
 	let npmPedalName = request.params.npmPedal;
 
 	pedalController.addPedal( npmPedalName ).then(
-		( resolve ) =>
-		{
-			if ( resolve.hasBeenUpdated )
-				/* response.redirect( `http://127.0.0.1:8886?pedal=${npmPedalName}`); */
-				response.send( `Your pedal has been updated` );
-			else if ( resolve.hasBeenInstalled )
-				/* response.redirect( `http://127.0.0.1:8886?pedal=${npmPedalName}`); */
-				response.send( `Your pedal has been installed` );
-		},
+		() => { response.status( 301 ).json( { 'redirect' : `http://127.0.0.1:8886/testers/publication.html/?pedal=${npmPedalName}` } ); },
 		( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ); }
 	)
 });
