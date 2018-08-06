@@ -13,7 +13,7 @@
 		"url": "git+https://github.com/MikyStar/BackEnd-WASABI.git"
 	},
 	"author": "Mike AUBENAS",
-	"license": "UNLICENSED",
+	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/MikyStar/BackEnd-WASABI/issues"
 	},
