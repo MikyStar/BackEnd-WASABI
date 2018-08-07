@@ -36,7 +36,7 @@ This is the repository containing the backend code for the PedalBoard of WASABI'
 
 # Tutorial
 
-## Initialization
+## Initialization (local work)
 
 `REQUIRE : MongoDB & Mongod & NodeJS`
 
@@ -85,9 +85,18 @@ npm start
 
 ### Run the project
 
+Make sure that you have :
+
+1. Cloned mrvautin/adminMongo at the root of the project
+2. Edited the file adminMongo/config/app.json with a 'password' and a 'context'
+3. Had a 'mongo.env' file inside a 'environments' folder that contains the 'MONGO_INITDB_ROOT_USERNAME' and the 'MONGO_INITDB_ROOT_PASSWORD'
+
 ```sh
 docker-compose up
 ```
+
+> adminMongo connection string : mongodb://[the user]:[the password]@mongo:[the port]
+
 
 ### Access Mongo within Docker
 

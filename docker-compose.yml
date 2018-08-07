@@ -27,18 +27,16 @@ services :
         expose :
             - "27017"
 
-    mongoexpress :
-        container_name : mongo-express
-        image : "mongo-express"
+    admin-mongo :
+        container_name : admin-mongo
         restart : unless-stopped
-        env_file :
-            - ./environments/mongoExpress.env
-        depends_on :
-        - "mongo"
-        links :
-            - "mongo"
+        build : ./adminMongo/
         ports :
             - "1234:1234"
+        depends_on :
+            - "mongo"
+        links :
+            - "mongo"
 
 volumes :
     mongo-data:
