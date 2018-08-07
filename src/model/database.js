@@ -33,7 +33,11 @@ exports.initializeMongo = () =>
 
 	const database = mongoose.connection;
 
-	database.on('error', console.error.bind(console, 'Connection error'));
+	database.on('error', () =>
+	{
+		console.error( 'Connection error' );
+		process.exit();
+	});
 
 	database.once('open', () =>
 	{

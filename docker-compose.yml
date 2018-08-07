@@ -22,21 +22,37 @@ services :
         restart : unless-stopped
         volumes :
             - mongo-data:/data/db
-        env_file :
-            ./environments/mongo.env
+        #env_file :
+            #./environments/mongo.env
+        environment :
+            MONGO_INITDB_ROOT_USERNAME : #theTrueUser
+            MONGO_INITDB_ROOT_PASSWORD : #theTruePassword
         expose :
             - "27017"
 
-    adminmongo :
-        container_name : admin-mongo
-        image : "mrvautin/adminmongo"
-        env_file :
-            - ./environments/adminMongo.env
-        restart : unless-stopped
+    #adminmongo :
+        #container_name : admin-mongo
+        #image : "mrvautin/adminmongo"
+        #env_file :
+            #- ./environments/adminMongo.env
+        #restart : unless-stopped
         #command : bash -c "node app.js && rm ./config/app.json"
         #command : ls ./config
+        #depends_on :
+            #- "mongo"
+        #links :
+            #- "mongo"
+        #ports :
+            #- "1234:1234"
+
+    mongoexpress :
+        container_name : mongo-express
+        image : "mongo-express"
+        restart : unless-stopped
+        env_file :
+            - ./environments/mongoExpress.env
         depends_on :
-            - "mongo"
+        - "mongo"
         links :
             - "mongo"
         ports :
