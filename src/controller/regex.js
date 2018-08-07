@@ -25,17 +25,17 @@ module.exports =
 	},
 
 	/**
-	 * @description Check if string matches a SymVer of three numbers separated by dots.
+	 * @description Check if string matches a SemVer of three numbers separated by dots.
 	 *
 	 * @example True = '1.0.0' ; 999.999.999' ; '123.45.6'
 	 * @example False = 'a.0.0' ; '12.0' ; '122.098.O'
 	 *
-	 * @param {string} symVer The SymVer we want to check
+	 * @param {string} semVer The SemVer we want to check
 	 *
-	 * @returns {boolean} True if is a valid SymVer, false otherwise
+	 * @returns {boolean} True if is a valid SemVer, false otherwise
 	 */
-	checkSymVer : ( symVer ) =>
+	checkSemVer : ( semVer ) =>
 	{
-		return /^[0-9]?[0-9]?[0-9]\.[0-9]?[0-9]?[0-9]\.[0-9]?[0-9]?[0-9]$/.test( symVer);
+		return /^[0-9]?[0-9]?[0-9]\.[0-9]?[0-9]?[0-9]\.[0-9]?[0-9]?[0-9]$/.test( semVer);
 	}
 }
