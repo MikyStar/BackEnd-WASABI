@@ -19,6 +19,7 @@ This is the repository containing the backend code for the PedalBoard of WASABI'
 - [JWT](https://github.com/auth0/node-jsonwebtoken)
 - [Passport](http://www.passportjs.org/)
 - [Bcrypt](https://www.npmjs.com/package/bcrypt)
+- [CORS](https://www.npmjs.com/package/cors)
 
 ## Passport strategies
 
