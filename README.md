@@ -44,14 +44,14 @@ This is the repository containing the backend code for the PedalBoard of WASABI'
 2. npm install
 3. git clone https://github.com/mrvautin/adminMongo.git && cd adminMongo
 4. npm install
-5. Modify /config/app.json with :
+5. Modify ./config/app.json with :
 ```json
 {
 	"app":
 	{
 		"host": "127.0.0.1",
 		"port": 1234,
-		"pawssword" : "A password",
+		"password" : "A password",
 		"context" : "AdminMongo"
 	}
 }
@@ -59,7 +59,7 @@ This is the repository containing the backend code for the PedalBoard of WASABI'
 6. cd ..
 7. mkdir database
 8. sudo chown -R \`id -u\` database
-9. mongod --dbpath database
+9. mongod --dbpath database/
 10. cd database
 11. mongo --host 127.0.0.1:27017
 12. [PROMPT MongoDB] use [ name of the database in sensibleInformations.js ]
@@ -68,17 +68,18 @@ This is the repository containing the backend code for the PedalBoard of WASABI'
 ## Working
 
 ```sh
-screen -S "mongod"
+screen -S mongodb
 mongod --dbpath database
 Ctrl + A + D
-screen -S "adminMongo"
+screen -S adminMongo
 cd adminMongo && npm start
 Ctrl + A + D
-screen -S "nodeServer"
+screen -S nodeServer
 npm start
 
 # To go back to a screen, type screen -r nameOfTheScreen
 # To view all the screen type screen -ls
+# If screen -ls says that the screen you wan to attach is already attached to an other screen, type screen -rd theScreenYouWant
 ```
 
 ## Deal with Docker
