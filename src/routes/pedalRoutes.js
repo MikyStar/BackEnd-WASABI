@@ -7,7 +7,7 @@ router.post( '/pedal/:npmPedal', (request, response) =>
 	let npmPedalName = request.params.npmPedal;
 
 	pedalController.addPedal( npmPedalName ).then(
-		() => { response.status( 301 ).json( { 'redirect' : `http://127.0.0.1:8886/testers/publication.html/?pedal=${npmPedalName}` } ); },
+		() => { response.status( 301 ).json( { 'redirect' : `https://wasabi.i3s.unice.fr/WebAudioPluginBank/testers/publication/${npmPedalName}` } ); },
 		( error ) => { response.status( 400 ).send( `An unexpected error occured : ${error}` ); }
 	)
 });
