@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html>
 
@@ -65,17 +64,11 @@
   </div>
   <div id="layout">
     <div class="content" id="main">
-      <audio src="./../BasketCaseGreendayriffDI.mp3" id="soundSample" controls loop></audio>
-      <div id="inputs">
-        Plugin URL (repository where your main.json file is)
-        <input type="text" id="urlPlugin" value="https://wasabi.i3s.unice.fr/WebAudioPluginBank/WASABI/QuadraFuzz3/"> GUI
-        <input id="checkBox" type="checkbox" checked>
+      <audio src="https://wasabi.i3s.unice.fr/WebAudioPluginBank/BasketCaseGreendayriffDI.mp3" id="soundSample" controls loop crossorigin></audio>
 
-
-
-      </div>
     </div>
   </div>
+  <div id="results"></div>
   <div id="onetest">
     <div id="WAP"></div>
     <div id="mocha"></div>
@@ -84,7 +77,9 @@
   <script src="https://wasabi.i3s.unice.fr/WebAudioPluginBank/node_modules/chai/chai.js"></script>
   <script>mocha.setup('bdd')</script>
 </body>
+
 <script>
+
   var checkbox = document.querySelector('#checkBox')
   var AudioContext = window.AudioContext || window.webkitAudioContext;
   var ctx = new AudioContext();
@@ -92,13 +87,21 @@
   var mediaSource = ctx.createMediaElementSource(player);
   var bt_buildIt = document.querySelector('#bt_buildIt');
   var buildpass = false;
-
-  // Hi mike, this is what you have to get from the API.
-  var URL = "https://wasabi.i3s.unice.fr/WebAudioPluginBank/WASABI/QuadraFuzz3/";
+  var pluginURL;
+  var pedalName;
+  var resultHTML = document.querySelector('#results')
 
   window.onload = () => {
 
-    checkMetadata(URL);
+    (function getPedalNameFromURL() {
+      let baseURLPedal = "https://mike-aubenas.fr:5001/pedals/node_modules/";
+      let currentURL = new URL(window.location.href);
+      pedalName = currentURL.searchParams.get('pedal');
+
+      pluginURL = `${baseURLPedal}${pedalName}`;
+    })()
+
+    checkMetadata(pluginURL);
 
     player.onplay = () => {
       ctx.resume().then(() => {
@@ -124,7 +127,7 @@
   }
 
 
-  // add the script tag and load the plugin 
+  // add the script tag and load the plugin
   function loadPlugin(className, baseURL) {
     let scriptURL = baseURL + "/main.js";
 
@@ -150,7 +153,7 @@
     document.head.appendChild(script);
   }
 
-  // instanciate the plugin 
+  // instanciate the plugin
   function buildPlugin(className, baseURL) {
 
     var plugin = new window[className](ctx, baseURL);
@@ -162,16 +165,14 @@
         // Then use the factory to create the HTML custom elem that holds the GUI
         // The loadGUI method takes care of inserting the link rel=import part,
         // not doing it twice, and associate the node with its GUI.
-        if (checkbox.checked) {
-          plugin.loadGui().then((elem) => {
-            console.log("ADDING PLUGIN");
-            // show the GUI of the plugn, the audio part is ready to be used
-            document.querySelector("#WAP").appendChild(elem);
-            //mediaSource.connect(node);
-            //node.connect(ctx.destination);
-            // Add node to the chain of plugins
-          });
-        }
+        plugin.loadGui().then((elem) => {
+          console.log("ADDING PLUGIN");
+          // show the GUI of the plugn, the audio part is ready to be used
+          document.querySelector("#WAP").appendChild(elem);
+          //mediaSource.connect(node);
+          //node.connect(ctx.destination);
+          // Add node to the chain of plugins
+        });
         document.body.querySelector("#WAP").insertAdjacentHTML('afterbegin', '<h2>' + `${className}` + '</h2>')
         try {
           mediaSource.connect(node);
@@ -179,7 +180,7 @@
           console.log("this plugin does not use audioworkletnode or compositenode");
           mediaSource.connect(node.getInput(0));
         }
-        // if (node instanceof AudioWorkletNode) 
+        // if (node instanceof AudioWorkletNode)
         // else mediaSource.connect(node.getInput(0));
         node.connect(ctx.destination);
         buildpass = true;
@@ -196,14 +197,8 @@
     }
   }
 
-function callToRemoveWAP() {
-    // server route
-  }
 
-  function callTokeepWAP() {
-    //server route
-  }
-  /* 
+  /*
   here we use mocha chai.js to apply unit test on the plugin. The test cases cover the existence and (soon) the type of the API calls.
   */
   function testPlugin(param) {
@@ -213,9 +208,12 @@ function callToRemoveWAP() {
     let passes = false;
     var testcontainer = document.querySelector("#WAP");
 
-    describe('Metadata', () => {
-      it('plugin should have a JSON getMetadata() method', () => {
+    describe('Metadata', function () {
+      it('plugin should have a JSON getMetadata() method', function () {
         expect(plugin.getMetadata()).to.exist;
+      });
+      it('the getMetadata() function should return a json object', function () {
+        plugin.getMetadata().then((res) => { expect(res).to.not.be.empty });
       });
     });
 
@@ -245,13 +243,13 @@ function callToRemoveWAP() {
 
     describe('State getter', function () {
       it('plugin should have a getState() method', function () {
-        expect(plugin).to.have.property("setState");
+        expect(plugin).to.have.property("setPatch");
       });
     });
 
 
     describe('State setter', function () {
-      it('plugin should have a setState(data) method', function () {
+      it('plugin should have a setState(value) method', function () {
         expect(plugin).to.have.property("setState");
       });
     });
@@ -262,36 +260,63 @@ function callToRemoveWAP() {
       });
     });
 
-
-
-    describe('Patch setter', function () {
-      it('plugin should have a setPatch(key,value) method', function () {
-        expect(plugin).to.have.property("setPatch");
-      });
-    });
-
-
     describe('Input Channel Number', function () {
       it('plugin should have an inputChannelCount() method', function () {
         expect(plugin.inputChannelCount()).to.exist;
       });
     });
-    var stats = mocha.run()
-    console.log(stats.stats);
-    if (stats.stats.failures > 0) passes = false; else passes = true;
 
+    describe('Number of inputs', function () {
+      it('plugin should have an numberOfInputs() method', function () {
+        expect(plugin.numberOfInputs).to.exist;
+
+      });
+    });
+    describe('Number of outputs', function () {
+      it('plugin should have an numberOfOutputs() method', function () {
+        expect(plugin.numberOfOutputs).to.exist;
+      });
+    });
+
+
+    var stats = mocha.run();
+    setTimeout(() => { results(stats.stats, resultHTML) }, 100);
+
+  }
+
+  function results(stats, resultHTML) {
+    console.log(stats.passes);
+    if (stats.failures > 0) passes = false; else passes = true;
     if (passes == false) {
-      testcontainer.innerHTML += '<h3>SDK not respected, not included or badly overrided, correct it and try again</h3>'
+      resultHTML.setAttribute("style","color:red")
+      resultHTML.innerHTML += '<p><h3>SDK not respected, not included or badly overrided, correct it and try again</h3><p>'
       callToRemoveWAP();
     } else {
-      testcontainer.innerHTML += `<h3>WAP conform ! it's now published on ${URL}</h3>`
+      resultHTML.setAttribute("style","color:green")
+      resultHTML.innerHTML += `<h3>WAP conform ! it's now published on ${pluginURL}</h3>`
       callTokeepWAP();
     }
+
+  }
+
+  function callToRemoveWAP() {
+    let xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState == XMLHttpRequest.DONE) {
+        if (xhr.status !== 200) { alert("Deletion aborted") }
+      };
+    }
+    xhr.open("DELETE", `https://mike-aubenas.fr:5001/api/pedal/${pedalName}`, true);
+    xhr.send();
+  }
+
+  function callTokeepWAP() {
+    //TODO
   }
 
 
 
-  
+
 </script>
 
 
